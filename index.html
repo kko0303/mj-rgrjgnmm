@@ -1339,7 +1339,7 @@ function settingsBlob(){
 }
 async function pushSettings(){
   if(!syncOn())return;
-  try{await syncCall({action:"putState",key:"settings",json:settingsBlob()})}catch(e){}
+  try{await syncCall({action:"putState",name:"settings",json:settingsBlob()})}catch(e){}
 }
 function applySettings(rm){
   if(!rm)return false;
@@ -1365,7 +1365,7 @@ function pushGame(){
   if(!syncOn())return;
   clearTimeout(gameTimer);
   gameTimer=setTimeout(async()=>{
-    try{await syncCall({action:"putState",key:"game",json:{at:Date.now(),game:S}})}catch(e){}
+    try{await syncCall({action:"putState",name:"game",json:{at:Date.now(),game:S}})}catch(e){}
   },1200);
 }
 function gameLabel(g){
