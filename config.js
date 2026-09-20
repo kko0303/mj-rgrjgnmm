@@ -4,5 +4,5 @@
 // ここが空のままでも、アプリは端末内保存だけで普通に動きます。
 window.JT_CONFIG = {
   endpoint: "https://script.google.com/macros/s/AKfycbyrpJPKh5l92D9GC_EaYDxF039zhMSECCaOslq8trBzMzeQZ0V0a-JS4Z0siYtxb0jb2Q/exec",
-  key: "mj-myzn6p8t8q"
+  key: "mjperopero"
 };
