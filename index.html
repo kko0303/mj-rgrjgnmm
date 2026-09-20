@@ -20,7 +20,6 @@
   --jp:-apple-system,"Hiragino Sans","Noto Sans JP",system-ui,sans-serif;
   --num:"Barlow Semi Condensed",-apple-system,"Hiragino Sans",sans-serif;
   --mincho:"Hiragino Mincho ProN","Yu Mincho",YuMincho,serif;
-  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
 }
 *{box-sizing:border-box}
 html,body{height:100%}
@@ -32,7 +31,8 @@ img{max-width:100%}
 :focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 .tnum{font-variant-numeric:tabular-nums}
 
-#app{height:100%;display:flex;flex-direction:column}
+#app{height:100%;display:flex;flex-direction:column;
+  padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px)}
 #bar{flex:none;height:42px;display:flex;align-items:center;justify-content:space-between;
   padding:0 10px;background:#04100C;border-bottom:1px solid var(--line);gap:8px}
 #bar .mid{font-family:var(--mincho);font-size:18px;display:flex;align-items:baseline;gap:8px}
@@ -846,6 +846,22 @@ function sizeSeats(){
   }
 }
 addEventListener("resize",sizeSeats);
+
+/* ---- 画面の縮尺（端末ごと・端末内に保存） ---- */
+let ZMUL=+LS.get("jt2.zoom",1)||1;
+const zoomOK=()=>!!(window.CSS&&CSS.supports&&CSS.supports("zoom","0.8"));
+function autoScale(){
+  return Math.max(.6,Math.min(1,Math.min(innerWidth/820,innerHeight/620)));
+}
+function fitScale(){
+  if(!zoomOK())return;
+  const v=Math.round(autoScale()*ZMUL*100)/100;
+  document.documentElement.style.zoom=(v===1?"":v);
+  requestAnimationFrame(sizeSeats);
+}
+function setZoom(m){ZMUL=+m||1;LS.set("jt2.zoom",ZMUL);fitScale()}
+addEventListener("resize",fitScale);
+addEventListener("orientationchange",()=>setTimeout(fitScale,320));
 
 /* ---- 和了フロー ---- */
 function startHora(seat,tsumo){
@@ -1777,6 +1793,16 @@ function openSettings(){
     const mb1=ce("button","btn","席とメンバーを変更");mb1.onclick=()=>{close();openSeatPicker(0)};
     const mb2=ce("button","btn","名簿・リーチボイス");mb2.onclick=()=>{close();openMembers()};
     mrow.append(mb1,mb2);card.append(mrow);
+    card.append(ce("div","sec","表示（この端末だけ）"));
+    const zr=ce("div","row");
+    const zf=ce("div","field");zf.style.flex="1 1 200px";
+    zf.append(ce("label",null,"画面の大きさ"));
+    const zs=ce("select");
+    [["自動（端末に合わせる）",1],["少し大きく",1.1],["大きく",1.25],["少し小さく",.9],["小さく",.8]]
+      .forEach(([t,v])=>{const o=ce("option",null,t);o.value=v;if(Math.abs(ZMUL-v)<.001)o.selected=true;zs.append(o)});
+    zs.onchange=()=>setZoom(zs.value);
+    zf.append(zs);zr.append(zf);card.append(zr);
+    card.append(ce("p","note",zoomOK()?"画面が見切れるときは小さく、文字が読みにくいときは大きくしてください。":"この端末は自動調整に対応していません。"));
     card.append(ce("div","sec","ゲーム"));
     const g=ce("div","row");
     const mkSel=(lbl,key,opts)=>{
@@ -1899,6 +1925,7 @@ document.addEventListener("pointerdown",()=>{
   try{const u=new SpeechSynthesisUtterance(" ");u.lang="ja-JP";u.volume=0;speechSynthesis.speak(u)}catch(e){}
   try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();AC.resume()}catch(e){}
 },{once:true});
+fitScale();
 render();
 if(S.phase==="setup")openSeatPicker();
 loadVoiceManifest();loadUserVoices();
