@@ -1,5 +1,7 @@
-const CACHE = "jt2-v1";
-const FILES = ["./", "./index.html", "./config.js", "./manifest.json"];
+const CACHE = "jt2-v2";
+const FILES = ["./", "./index.html", "./manifest.json"];
+// 設定系は常に最新を取りに行く（変更が全端末にすぐ届くように）
+const ALWAYS_FRESH = ["config.js", "voices.json"];
 
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES)).then(() => self.skipWaiting()));
@@ -11,8 +13,17 @@ self.addEventListener("activate", e => {
 });
 self.addEventListener("fetch", e => {
   const url = new URL(e.request.url);
-  // スプレッドシートへの通信はキャッシュしない
   if (e.request.method !== "GET" || url.hostname.indexOf("google") >= 0) return;
+
+  const fresh = ALWAYS_FRESH.some(f => url.pathname.endsWith("/" + f));
+  if (fresh) {
+    e.respondWith(
+      fetch(new Request(url.href, { cache: "no-store" }))
+        .then(res => { const c = res.clone(); caches.open(CACHE).then(x => x.put(e.request, c)).catch(() => {}); return res; })
+        .catch(() => caches.match(e.request))
+    );
+    return;
+  }
   e.respondWith(
     fetch(e.request).then(res => {
       const copy = res.clone();
