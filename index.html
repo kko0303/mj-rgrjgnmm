@@ -33,11 +33,14 @@ img{max-width:100%}
 
 #app{height:100%;display:flex;flex-direction:column;
   padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px)}
-#bar{flex:none;height:42px;display:flex;align-items:center;justify-content:space-between;
-  padding:0 10px;background:#04100C;border-bottom:1px solid var(--line);gap:8px}
-#bar .mid{font-family:var(--mincho);font-size:18px;display:flex;align-items:baseline;gap:8px}
+#bar{flex:none;min-height:44px;display:flex;align-items:center;zoom:var(--inv,1);
+  padding:5px 14px;background:#04100C;border-bottom:1px solid var(--line);gap:12px}
+#bar .mid{font-family:var(--mincho);font-size:18px;display:flex;align-items:baseline;gap:8px;
+  margin-right:auto;padding-left:4px}
 #bar .mid span{font-family:var(--num);font-size:13px;color:var(--dim)}
-.barbtn{padding:6px 12px;border-radius:8px;font-size:13px;color:var(--dim);border:1px solid transparent}
+.barbtn{padding:10px 16px;border-radius:10px;font-size:14px;color:var(--ink);
+  border:1px solid var(--line);background:#0B2019;min-width:80px;text-align:center}
+.barbtn#btnMenu{border-color:#4A7A63;background:#103024}
 .barbtn:active{background:var(--felt2)}
 .barbtn[disabled]{opacity:.3}
 
@@ -52,7 +55,7 @@ img{max-width:100%}
 .seat{position:relative;overflow:hidden;border-radius:10px;
   background:linear-gradient(180deg,#0E2A20,#09201A);border:2px solid #2A5B46}
 .s0{grid-area:3/2}.s1{grid-area:2/3}.s2{grid-area:1/2}.s3{grid-area:2/1}
-.seat.dealer{border-color:var(--gold)}
+.seat.dealer{border-color:var(--gold);background:linear-gradient(180deg,#5E2019,#3A100C)}
 .seat.wall::before{content:"";position:absolute;inset:0;pointer-events:none;border-radius:8px;
   animation:wallFlash .82s infinite}
 .s0.wall::before{background:linear-gradient(180deg,rgba(110,182,240,.5),rgba(90,169,230,0) 58%);
@@ -851,12 +854,13 @@ addEventListener("resize",sizeSeats);
 let ZMUL=+LS.get("jt2.zoom",1)||1;
 const zoomOK=()=>!!(window.CSS&&CSS.supports&&CSS.supports("zoom","0.8"));
 function autoScale(){
-  return Math.max(.6,Math.min(1,Math.min(innerWidth/820,innerHeight/620)));
+  return Math.max(.6,Math.min(1,Math.min(innerWidth/820,(innerHeight-44)/575)));
 }
 function fitScale(){
   if(!zoomOK())return;
   const v=Math.round(autoScale()*ZMUL*100)/100;
   document.documentElement.style.zoom=(v===1?"":v);
+  document.documentElement.style.setProperty("--inv",v===1?"1":String(Math.round(1/v*1000)/1000));
   requestAnimationFrame(sizeSeats);
 }
 function setZoom(m){ZMUL=+m||1;LS.set("jt2.zoom",ZMUL);fitScale()}
@@ -1481,13 +1485,14 @@ function openResult(){
     card.append(logTable(S.log,S.names));
     const f=ce("div","row");f.style.justifyContent="flex-end";f.style.marginTop="14px";
     const b0=ce("button","btn ghost","閉じる");b0.onclick=close;
-    const b1=ce("button","btn","席替えして次へ");
-    b1.onclick=()=>{const n=S.names.slice();S=newGame([n[1],n[2],n[3],n[0]]);undo=[];close();startHand()};
     const b2=ce("button","btn","同じ並びで次へ");
-    b2.onclick=()=>{S=newGame(S.names.slice());undo=[];close();startHand()};
+    b2.onclick=()=>{const n=S.names.slice();S=newGame([n[1],n[2],n[3],n[0]]);undo=[];close();startHand()};
     const b3=ce("button","btn gold","メンバーを変えて次へ");
     b3.onclick=()=>{S=newGame();undo=[];saveGame();close();render();openSeatPicker()};
-    f.append(b0,b1,b2,b3);card.append(f);
+    f.append(b0,b2,b3);card.append(f);
+    const nn=S.names.slice(),nx=[nn[1],nn[2],nn[3],nn[0]];
+    card.append(ce("p","note","「同じ並びで次へ」は座る場所は変えずに、起家だけひとつ送ります（前の東家が北家へ）。次は "+
+      ["東","南","西","北"].map((w,i)=>w+"＝"+(nx[i]||"—")).join(" / ")+" です。"));
   });
 }
 function logTable(log,names){
