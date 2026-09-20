@@ -1,0 +1,8 @@
+{
+  "voices": [
+    { "id": "v1", "label": "ボイス1", "file": "voices/riichi1.mp3" },
+    { "id": "v2", "label": "ボイス2", "file": "voices/riichi2.mp3" },
+    { "id": "v3", "label": "ボイス3", "file": "voices/riichi3.mp3" },
+    { "id": "v4", "label": "ボイス4", "file": "voices/riichi4.mp3" }
+  ]
+}

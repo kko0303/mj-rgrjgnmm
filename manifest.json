@@ -1,0 +1,13 @@
+{
+  "name": "雀卓スコア",
+  "short_name": "雀卓スコア",
+  "start_url": "./index.html",
+  "display": "fullscreen",
+  "orientation": "landscape",
+  "background_color": "#061310",
+  "theme_color": "#061310",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
