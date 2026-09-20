@@ -290,12 +290,12 @@ const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
 
 /* ---- ルール ---- */
 const UMA={"なし":[0,0,0,0],"5-10":[10,5,-5,-10],"10-20":[20,10,-10,-20],"10-30":[30,10,-10,-30],"20-30":[30,20,-20,-30]};
-const DEF={length:"hanchan",start:25000,ret:30000,umaKey:"10-20",oka:true,
-  agariyame:true,tenpaiyame:true,rasuoya:false,kiriage:false,tobi:true,
-  multiRon:"double",honbaToAll:true,atamahane:true,
+const DEF={length:"hanchan",start:25000,ret:25000,umaKey:"10-20",oka:true,
+  agariyame:true,tenpaiyame:true,rasuoya:false,kiriage:true,tobi:true,
+  multiRon:"triple",honbaToAll:true,atamahane:false,
   westEntry:true,westLine:30000,northEntry:false,
   yakitori:false,yakitoriPt:10000,warepai:false,voice:true,dice:true,
-  gosha:true,rate:0,rateUnit:"コイン"};
+  gosha:true,rate:50,rateUnit:"コイン"};
 let R=Object.assign({},DEF,LS.get(K.r,{}));
 const saveRules=()=>{LS.set(K.r,R);touchSettings()};
 
