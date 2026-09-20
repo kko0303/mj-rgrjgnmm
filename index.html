@@ -1298,11 +1298,29 @@ function pushRecord(){
 }
 
 /* ---- 同期 ---- */
+/* ---- この端末 ---- */
+function devModel(){
+  const u=navigator.userAgent;
+  if(/iPad/.test(u)||(/Macintosh/.test(u)&&navigator.maxTouchPoints>1))return "iPad";
+  if(/iPhone/.test(u))return "iPhone";
+  if(/Android/.test(u))return "Android";
+  if(/Macintosh/.test(u))return "Mac";
+  if(/Windows/.test(u))return "Windows";
+  return "その他";
+}
+let DEVID=LS.get("jt2.devid","");
+if(!DEVID){DEVID=uid()+uid();LS.set("jt2.devid",DEVID)}
+let DEVNAME=LS.get("jt2.devname","");
+const devName=()=>DEVNAME||devModel();
+function setDevName(v){DEVNAME=(v||"").trim().slice(0,20);LS.set("jt2.devname",DEVNAME)}
+const devInfo=()=>({id:DEVID,name:devName(),ua:devModel()});
+
 let SYNC={state:"off",msg:"スプレッドシート未設定"};
 const syncOn=()=>!!CFG.endpoint;
 async function syncCall(payload){
+  const extra=(payload&&(payload.action==="getState"||payload.action==="devices"))?{dev:devInfo()}:{};
   const res=await fetch(CFG.endpoint,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},
-    body:JSON.stringify(Object.assign({key:CFG.key},payload))});
+    body:JSON.stringify(Object.assign({key:CFG.key},extra,payload))});
   if(!res.ok)throw new Error("HTTP "+res.status);
   const j=await res.json();
   if(!j.ok)throw new Error(j.error||"error");
@@ -1696,6 +1714,59 @@ function openRecord(rec){
   });
 }
 
+/* ---- 接続端末 ---- */
+function openDevices(){
+  openOv((card,close)=>{
+    const draw=async()=>{
+      card.innerHTML="";
+      const h=ce("div","row");h.style.justifyContent="space-between";
+      h.append(ce("h2",null,"接続端末"),rotBtn());card.append(h);
+      card.append(ce("p","lead","アプリを開いた端末の一覧です。名前は各端末が自分で付けたものなので、空欄や見覚えのない端末があれば注意してください。"));
+
+      const me=ce("div","row");
+      const f=ce("div","field");f.style.flex="1 1 200px";
+      f.append(ce("label",null,"この端末の名前（持ち主が分かる名前に）"));
+      const inp=ce("input");inp.id="devName";inp.maxLength=20;inp.value=DEVNAME;inp.placeholder=devModel();
+      inp.oninput=()=>setDevName(inp.value);
+      f.append(inp);me.append(f);
+      card.append(me);
+      card.append(ce("p","note","この端末: "+devModel()+"　ID "+DEVID.slice(0,6)));
+
+      card.append(ce("div","sec","一覧"));
+      const box=ce("div");box.id="devList";
+      box.append(ce("p","note","読み込み中…"));
+      card.append(box);
+
+      const ft=ce("div","row");ft.style.justifyContent="flex-end";ft.style.marginTop="14px";
+      const rf=ce("button","btn sm","更新");rf.onclick=()=>draw();
+      const ok=ce("button","btn gold","閉じる");ok.onclick=close;
+      ft.append(rf,ok);card.append(ft);
+
+      if(!syncOn()){box.innerHTML="";box.append(ce("p","note","スプレッドシート未設定のため、この端末のことしか分かりません。"));return}
+      try{
+        const j=await syncCall({action:"devices"});
+        const list=(j.devices||[]).sort((a,b)=>b.last-a.last);
+        box.innerHTML="";
+        if(!list.length){box.append(ce("p","note","まだ記録がありません。"));return}
+        const sc=ce("div","scroll"),t=ce("table");
+        t.innerHTML="<thead><tr><th>端末名</th><th>機種</th><th>最終アクセス</th><th>回数</th></tr></thead>";
+        const tb=ce("tbody");
+        list.forEach(d=>{
+          const mine=d.id===DEVID;
+          const tr=ce("tr");
+          const when=d.last?new Date(d.last).toLocaleString("ja-JP",{month:"numeric",day:"numeric",hour:"2-digit",minute:"2-digit"}):"—";
+          tr.innerHTML="<td>"+(d.name||"（名前なし）")+(mine?" <span style='color:var(--gold)'>← この端末</span>":"")+
+            "</td><td>"+(d.ua||"")+"</td><td>"+when+"</td><td>"+d.n+"</td>";
+          if(!d.name)tr.style.color="var(--red)";
+          tb.append(tr);
+        });
+        t.append(tb);sc.append(t);box.append(sc);
+      }catch(e){box.innerHTML="";box.append(ce("p","note","読み込めませんでした。"))}
+    };
+    draw();
+  });
+}
+
 /* ---- 設定 ---- */
 function openSettings(){
   openOv((card,close)=>{
@@ -1798,6 +1869,7 @@ function openMenu(){
     mk("成績・履歴",openStats);
     mk("席とメンバー",()=>openSeatPicker(0));
     mk("名簿・リーチボイス",openMembers);
+    mk("接続端末",openDevices);
     mk("設定",openSettings);
     if(S.phase==="play")mk("途中流局",()=>{applyAbort()});
     if(S.phase==="play")mk("この半荘を終了",()=>{snap();finish("手動終了")});
