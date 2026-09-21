@@ -110,10 +110,13 @@ img{max-width:100%}
 .up{color:var(--pos)}.down{color:var(--red)}
 
 #center{grid-area:2/2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px}
-.tray{width:min(40vh,190px);aspect-ratio:1;border-radius:16px;
-  background:linear-gradient(145deg,#4A4E4C,#2A2E2C);display:grid;place-items:center;
+.tray{width:min(40vh,190px);aspect-ratio:1;border-radius:16px;padding:8px;
+  background:linear-gradient(145deg,#4A4E4C,#2A2E2C);display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:7px;
   box-shadow:0 6px 18px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.12)}
-.well{width:72%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 40% 35%,#1F6E4E,#0E3A28);
+.trule{font-size:11px;line-height:1.35;color:#DCD9CF;text-align:center;max-width:96%;
+  letter-spacing:.02em;text-shadow:0 1px 2px rgba(0,0,0,.6)}
+.well{width:64%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 40% 35%,#1F6E4E,#0E3A28);
   display:flex;align-items:center;justify-content:center;gap:10px;
   box-shadow:inset 0 3px 10px rgba(0,0,0,.6)}
 .die{width:26px;height:26px;border-radius:5px;background:#F4F2EC;display:grid;
@@ -199,6 +202,24 @@ img{max-width:100%}
 .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
 .lbl{font-size:11px;color:var(--faint);letter-spacing:.08em;width:100%;margin-bottom:-2px}
 .chip{padding:8px 14px;border-radius:9px;border:1px solid var(--line);font-size:14px;color:var(--dim);background:var(--felt2)}
+.chip small{font-family:var(--num);opacity:.7;margin-left:5px}
+.vizbox{border:1px solid var(--line);border-radius:12px;background:var(--felt2);padding:12px;margin-bottom:12px}
+.vizttl{font-size:13px;color:var(--dim);margin-bottom:10px;letter-spacing:.04em}
+.vrow{display:flex;align-items:center;gap:10px;margin-bottom:7px}
+.vname{flex:0 0 84px;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vval{flex:0 0 74px;text-align:right;font-family:var(--num);font-variant-numeric:tabular-nums;
+  font-weight:700;font-size:14px}
+.vval.pos{color:var(--pos)}.vval.neg{color:var(--red)}
+.vtrack{position:relative;flex:1;height:20px;border-radius:5px;background:var(--felt3)}
+.vzero{position:absolute;left:50%;top:0;bottom:0;width:1px;background:#5C7A6D}
+.vbar{position:absolute;top:3px;bottom:3px;border-radius:4px;background:linear-gradient(90deg,#2B7457,#5FBF95)}
+.vbar.neg{background:linear-gradient(90deg,#C85040,#8E2E26)}
+.vstack{flex:1;display:flex;height:20px;border-radius:5px;overflow:hidden;background:var(--felt3)}
+.vseg{display:flex;align-items:center;justify-content:center;font-family:var(--num);
+  font-size:11px;font-weight:700;color:#0B1A14;min-width:0}
+.vlegend{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:9px}
+.vlg{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--dim)}
+.vlg i{width:10px;height:10px;border-radius:3px;display:block}
 .chip.on{border-color:var(--gold);color:var(--ink);background:var(--felt3)}
 .seatGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:12px}
 .seatCard{border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--felt2);
@@ -289,7 +310,8 @@ const sgn=n=>(n>0?"+":"")+fmt(n);
 const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
 
 /* ---- ルール ---- */
-const UMA={"なし":[0,0,0,0],"5-10":[10,5,-5,-10],"10-20":[20,10,-10,-20],"10-30":[30,10,-10,-30],"20-30":[30,20,-20,-30]};
+const UMA={"なし":[0,0,0,0],"5-10":[10,5,-5,-10],"10-20":[20,10,-10,-20],"10-30":[30,10,-10,-30],"20-30":[30,20,-20,-30],
+  "ラス回避":[30,10,0,-40]};
 const DEF={length:"hanchan",start:25000,ret:25000,umaKey:"10-20",oka:true,
   agariyame:true,tenpaiyame:true,rasuoya:false,kiriage:true,tobi:true,
   multiRon:"triple",honbaToAll:true,atamahane:false,
@@ -785,6 +807,19 @@ function renderSeat(i){
   }
   el.append(rot);
 }
+function rateName(v){
+  v=+v||0;
+  return ({0:"",50:"点5",100:"点ピン",200:"点2",300:"点3",500:"点5百"})[v]||("1pt="+v);
+}
+/* サイコロ枠に出す「今のルール」 */
+function ruleLine(ru){
+  ru=ru||R;
+  const a=[ru.length==="tonpuu"?"東風":"半荘"];
+  const rn=rateName(R.rate);if(rn)a.push(rn);
+  a.push(ru.umaKey||R.umaKey);
+  a.push(Math.round((ru.ret||R.ret)/1000)+"返し");
+  return a.join("・");
+}
 function renderCenter(){
   const c=$("#center");c.innerHTML="";
   if(S.phase==="setup"){
@@ -798,7 +833,9 @@ function renderCenter(){
     const anim=key!==lastDiceKey&&S.phase==="play";lastDiceKey=key;
     well.append(dieEl(S.dice.a,anim),dieEl(S.dice.b,anim));
   }
-  tray.append(well);wrap.append(tray);
+  tray.append(well);
+  tray.append(ce("div","trule",ruleLine(S.rules)));
+  wrap.append(tray);
   for(let i=0;i<4;i++){
     if(!S.riichi[i])continue;
     const key=S.gid+"_"+S.round+"_"+S.honba+"_"+i;
@@ -1110,7 +1147,10 @@ function openSeatPicker(seat){
       if(setup){
         const ok=ce("button","btn gold","この並びで開始");
         ok.disabled=S.names.some(n=>!n);
-        ok.onclick=()=>{S.ts=Date.now();close();startHand()};
+        ok.onclick=()=>{
+          // 開始の直前に、いまの設定でルールと持ち点を取り直す
+          S.rules=snapRules();S.pts=[R.start,R.start,R.start,R.start];
+          S.ts=Date.now();close();startHand()};
         ft.append(ok);
       }else{
         const ok=ce("button","btn gold","閉じる");ok.onclick=()=>{close();render()};ft.append(ok);
@@ -1302,6 +1342,7 @@ function buildRecord(){
   const mins=Math.max(1,Math.round(((S.end||Date.now())-S.ts)/60000));
   return {gid:S.gid,ts:S.ts,end:S.end||Date.now(),hands:S.hands,note:S.endNote,
     rule:(ru.length==="tonpuu"?"東風":"半荘")+"／ウマ"+ru.umaKey+(ru.oka?"／オカ有":"／オカ無"),
+    umaKey:ru.umaKey,
     umaKey:ru.umaKey,mins,names:S.names.slice(),graph:S.log.map(l=>l.after),
     rows:res.map(x=>{const st=S.st[x.i];
       return {seat:x.i,name:x.name,rank:x.rank,pts:x.pts,score:r1(x.score),
@@ -1584,10 +1625,117 @@ function rangeTo(){
   if(RANGE==="custom"&&RTO)return new Date(RTO+"T23:59:59").getTime();
   return Infinity;
 }
+let UMAF=LS.get("jt2.umaf","all");
+function umaOf(rec){
+  if(rec&&rec.umaKey)return rec.umaKey;
+  const m=/ウマ([^／/]+)/.exec((rec&&rec.rule)||"");
+  return m?m[1].trim():"不明";
+}
+function inRange(r){
+  if(RANGE==="all")return true;
+  const a=rangeFrom(),b=rangeTo(),t=r.end||r.ts;
+  return t>=a&&t<=b;
+}
 function filteredRecs(){
-  if(RANGE==="all")return RECS;
-  const a=rangeFrom(),b=rangeTo();
-  return RECS.filter(r=>{const t=r.end||r.ts;return t>=a&&t<=b});
+  return RECS.filter(r=>inRange(r)&&(UMAF==="all"||umaOf(r)===UMAF));
+}
+
+/* ===== 可視化 ===== */
+const PAL=["#BE8A2E","#4285C7","#5FBF95","#C85040","#9068CC","#D98A3E","#4FB3C4","#B85C9E"];
+function vizBlock(title){const d=ce("div","vizbox");d.append(ce("div","vizttl",title));return d}
+
+/* 合計ptの比較（0を中心にした横棒） */
+function ptBars(rows){
+  const box=vizBlock("合計pt");
+  const max=Math.max(1,...rows.map(o=>Math.abs(o.pt)));
+  rows.forEach(o=>{
+    const r=ce("div","vrow");
+    r.append(ce("div","vname",o.name));
+    const tk=ce("div","vtrack"),bar=ce("div","vbar"+(o.pt<0?" neg":""));
+    bar.style.width=(Math.abs(o.pt)/max*48)+"%";
+    if(o.pt<0)bar.style.right="50%";else bar.style.left="50%";
+    tk.append(ce("div","vzero"),bar);
+    const v=ce("div","vval"+(o.pt<0?" neg":o.pt>0?" pos":""),(o.pt>0?"+":"")+r1(o.pt));
+    r.append(tk,v);box.append(r);
+  });
+  return box;
+}
+
+/* 着順の内訳（積み上げ横棒） */
+function rankBars(rows){
+  const box=vizBlock("着順の内訳");
+  const col=["#BE8A2E","#4285C7","#5FBF95","#C85040"];
+  const lg=ce("div","vlegend");
+  ["1着","2着","3着","4着"].forEach((t,i)=>{
+    const e=ce("span","vlg");const d=ce("i");d.style.background=col[i];
+    e.append(d,document.createTextNode(t));lg.append(e);
+  });
+  box.append(lg);
+  rows.forEach(o=>{
+    const r=ce("div","vrow");
+    r.append(ce("div","vname",o.name));
+    const st=ce("div","vstack");
+    o.r.forEach((c,i)=>{
+      if(!c)return;
+      const seg=ce("div","vseg");
+      seg.style.width=(c/o.n*100)+"%";seg.style.background=col[i];
+      seg.title=(i+1)+"着 "+c+"回";
+      if(c/o.n>=0.12)seg.textContent=c;
+      st.append(seg);
+    });
+    r.append(st,ce("div","vval",(o.rk/o.n).toFixed(2)));
+    box.append(r);
+  });
+  box.append(ce("p","note","右の数字は平均順位。1着が金、4着が赤です。"));
+  return box;
+}
+
+/* 累積ptの推移（半荘ごと） */
+function trendEl(recs,names){
+  const box=vizBlock("累積ptの推移");
+  const list=recs.slice().sort((a,b)=>(a.end||a.ts)-(b.end||b.ts));
+  if(list.length<2){box.append(ce("p","note","2半荘以上でグラフが出ます。"));return box}
+  const cum={},series={};
+  names.forEach(n=>{cum[n]=0;series[n]=[[0,0]]});
+  list.forEach((rec,gi)=>{
+    (rec.rows||[]).forEach(x=>{
+      if(cum[x.name]===undefined)return;
+      cum[x.name]+=x.total;series[x.name].push([gi+1,cum[x.name]]);
+    });
+  });
+  let lo=0,hi=0;
+  names.forEach(n=>series[n].forEach(p=>{lo=Math.min(lo,p[1]);hi=Math.max(hi,p[1])}));
+  const pad=Math.max(10,(hi-lo)*0.12);lo-=pad;hi+=pad;
+  const W=680,H=250,ML=46,MR=76,MT=14,MB=26,N=list.length;
+  const X=i=>ML+(W-ML-MR)*(N?i/N:0);
+  const Y=v=>MT+(H-MT-MB)*(1-(v-lo)/(hi-lo||1));
+  const ns="http://www.w3.org/2000/svg";
+  const mk=(t,a)=>{const e=document.createElementNS(ns,t);for(const k in a)e.setAttribute(k,a[k]);return e};
+  const svg=mk("svg",{viewBox:"0 0 "+W+" "+H,width:"100%",role:"img","aria-label":"累積ptの推移"});
+  svg.style.cssText="display:block;max-width:100%";
+  const stepRaw=(hi-lo)/4;
+  const mag=Math.pow(10,Math.floor(Math.log10(Math.max(1,stepRaw))));
+  const step=Math.max(mag,Math.ceil(stepRaw/mag)*mag);
+  for(let v=Math.ceil(lo/step)*step;v<=hi;v+=step){
+    svg.append(mk("line",{x1:ML,x2:W-MR,y1:Y(v),y2:Y(v),stroke:"#1C4536","stroke-width":1}));
+    const tx=mk("text",{x:ML-8,y:Y(v)+4,fill:"#5C7A6D","font-size":11,"text-anchor":"end"});
+    tx.textContent=String(Math.round(v));svg.append(tx);
+  }
+  svg.append(mk("line",{x1:ML,x2:W-MR,y1:Y(0),y2:Y(0),stroke:"#8AA89A","stroke-width":1,"stroke-dasharray":"3 3"}));
+  const lab=mk("text",{x:W-MR+6,y:H-9,fill:"#5C7A6D","font-size":10,"text-anchor":"end"});
+  lab.textContent=N+"半荘";svg.append(lab);
+  names.forEach((n,k)=>{
+    const ps=series[n];if(ps.length<2)return;
+    const c=PAL[k%PAL.length];
+    svg.append(mk("path",{d:ps.map((p,i)=>(i?"L":"M")+X(p[0]).toFixed(1)+" "+Y(p[1]).toFixed(1)).join(" "),
+      fill:"none",stroke:c,"stroke-width":2,"stroke-linejoin":"round","stroke-linecap":"round"}));
+    const last=ps[ps.length-1];
+    svg.append(mk("circle",{cx:X(last[0]),cy:Y(last[1]),r:4,fill:c,stroke:"#0B2019","stroke-width":2}));
+    const tx=mk("text",{x:W-MR+8,y:Y(last[1])+4,fill:c,"font-size":11});
+    tx.textContent=n.slice(0,5);svg.append(tx);
+  });
+  box.append(svg);
+  return box;
 }
 function rangeLabel(){
   const o=RANGES.find(x=>x[1]===RANGE);
@@ -1635,7 +1783,23 @@ function openStats(){
         cr.append(mkd("開始日",RFROM,v=>RFROM=v,"rFrom"),mkd("終了日",RTO,v=>RTO=v,"rTo"));
         card.append(cr);
       }
-      card.append(ce("p","note",rangeLabel()+"　"+recs.length+"半荘"));
+      // ルール（ウマ）の選択 — 記録があるものだけ出す
+      const inR=RECS.filter(inRange),cnt={};
+      inR.forEach(r=>{const k=umaOf(r);cnt[k]=(cnt[k]||0)+1});
+      const keys=Object.keys(cnt).sort((a,b)=>cnt[b]-cnt[a]);
+      if(keys.length>1||UMAF!=="all"){
+        const ur=ce("div","row");
+        const mkc=(t,v,n)=>{
+          const b=ce("button","chip"+(UMAF===v?" on":""),t);
+          if(n!=null)b.append(ce("small",null,String(n)));
+          b.onclick=()=>{UMAF=v;LS.set("jt2.umaf",v);draw()};
+          ur.append(b);
+        };
+        mkc("全ルール","all",inR.length);
+        keys.forEach(k=>mkc(k,k,cnt[k]));
+        card.append(ur);
+      }
+      card.append(ce("p","note",rangeLabel()+(UMAF==="all"?"":"・"+UMAF)+"　"+recs.length+"半荘"));
       const per={};
       recs.forEach(rec=>(rec.rows||[]).forEach(x=>{
         const o=per[x.name]||(per[x.name]={n:0,pt:0,rk:0,r:[0,0,0,0],ag:0,hj:0,ri:0,tm:0,agP:0,hjP:0,hands:0,tobi:0});
@@ -1663,6 +1827,10 @@ function openStats(){
           tb.append(tr);
         });
         t.append(tb);sc.append(t);card.append(sc);
+        card.append(ce("div","sec","グラフで見る"));
+        card.append(ptBars(rows));
+        card.append(rankBars(rows));
+        card.append(trendEl(recs,rows.map(o=>o.name)));
         // 精算表
         card.append(ce("div","sec","精算（"+rangeLabel()+"）"));
         const tr2=transfers(rows);
