@@ -45,7 +45,7 @@ img{max-width:100%}
 .barbtn[disabled]{opacity:.3}
 
 #table{flex:1;display:grid;min-height:0;
-  grid-template-columns:1.15fr 2fr 1.15fr;grid-template-rows:1fr 1.35fr 1fr;
+  grid-template-columns:1.15fr 2fr 1.15fr;grid-template-rows:1fr 1.1fr 1fr;
   background:radial-gradient(ellipse at center,#12402F 0%,#0C2C20 48%,#061913 100%);
   gap:5px;padding:5px}
 .corner{display:flex;align-items:center;justify-content:center;padding:6px}
@@ -73,7 +73,7 @@ img{max-width:100%}
 .s1 .rot{transform:translate(-50%,-50%) rotate(-90deg)}
 .s2 .rot{transform:translate(-50%,-50%) rotate(180deg)}
 .s3 .rot{transform:translate(-50%,-50%) rotate(90deg)}
-.nameRow{display:flex;align-items:center;gap:7px;min-height:24px}
+.nameRow{display:flex;align-items:center;gap:7px;min-height:22px}
 .wbadge{font-family:var(--mincho);font-size:15px;line-height:1;padding:3px 6px;border-radius:5px;
   background:var(--gold);color:#1a1205;flex:none}
 .wbadge.oya{background:var(--red);color:#fff}
@@ -95,8 +95,14 @@ img{max-width:100%}
 .calc .c{font-size:clamp(24px,5vh,42px);font-weight:700;border-top:1px solid var(--dim);
   padding-top:1px;margin-top:1px}
 .btnRow{display:flex;gap:6px;align-items:center}
+.nakiRow{margin-top:1px}
+.nkTag{font-size:10px;color:var(--faint);letter-spacing:.04em}
+.nkTag.on{color:var(--gold)}
+.sbtn.mini{min-width:44px;padding:1px 0;font-size:11px;border-radius:6px;line-height:1.45;
+  background:linear-gradient(180deg,#4C7A5E,#355A44);border-color:#6FA585}
+.sbtn.mini.on{background:linear-gradient(180deg,#5E9A74,#3F6B50)}
 .btnRow .sp{flex:1}
-.sbtn{padding:7px 0;min-width:62px;text-align:center;border-radius:7px;font-size:14px;
+.sbtn{padding:6px 0;min-width:62px;text-align:center;border-radius:7px;font-size:14px;
   background:linear-gradient(180deg,#3A6FA8,#2C5988);border:1px solid #5A92C8;color:#fff}
 .sbtn:active{filter:brightness(1.25)}
 .sbtn.on{background:linear-gradient(180deg,#D2564A,#A8382E);border-color:#E87A6F}
@@ -110,11 +116,11 @@ img{max-width:100%}
 .up{color:var(--pos)}.down{color:var(--red)}
 
 #center{grid-area:2/2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px}
-.tray{width:min(40vh,190px);aspect-ratio:1;border-radius:16px;padding:8px;
+.tray{width:min(30vh,150px);aspect-ratio:1;border-radius:16px;padding:8px;
   background:linear-gradient(145deg,#4A4E4C,#2A2E2C);display:flex;flex-direction:column;
   align-items:center;justify-content:center;gap:7px;
   box-shadow:0 6px 18px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.12)}
-.trule{font-size:11px;line-height:1.35;color:#DCD9CF;text-align:center;max-width:96%;
+.trule{font-size:10px;line-height:1.4;color:#DCD9CF;text-align:center;max-width:98%;word-break:keep-all;
   letter-spacing:.02em;text-shadow:0 1px 2px rgba(0,0,0,.6)}
 .well{width:64%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 40% 35%,#1F6E4E,#0E3A28);
   display:flex;align-items:center;justify-content:center;gap:10px;
@@ -340,13 +346,15 @@ function snapRules(){return {length:R.length,start:R.start,ret:R.ret,umaKey:R.um
 function newGame(names){
   return {gid:uid(),names:names||["","","",""],
     pts:[R.start,R.start,R.start,R.start],
-    round:0,honba:0,kyotaku:0,riichi:[0,0,0,0],ext:0,warepai:null,dice:null,
+    round:0,honba:0,kyotaku:0,riichi:[0,0,0,0],nk:[0,0,0,0],ext:0,warepai:null,dice:null,
     phase:names?"play":"setup",done:false,endNote:"",pay:null,
-    st:[0,1,2,3].map(()=>({agari:0,houju:0,riichi:0,tsumo:0,agariPts:0,houjuPts:0,oyaAgari:0,renchan:0})),
+    st:[0,1,2,3].map(()=>({agari:0,houju:0,riichi:0,tsumo:0,agariPts:0,houjuPts:0,oyaAgari:0,renchan:0,naki:0,nakiN:0})),
     log:[],hands:0,ts:Date.now(),rules:snapRules()};
 }
 let S=LS.get(K.g,null);
 if(!S||!S.pts||!S.st||!S.st[0]||S.st[0].agariPts===undefined) S=newGame();
+if(!Array.isArray(S.nk))S.nk=[0,0,0,0];
+S.st.forEach(o=>{if(o.naki===undefined){o.naki=0;o.nakiN=0}});
 const saveGame=()=>LS.set(K.g,S);
 let undo=[];
 const snap=()=>{undo.push(JSON.stringify(S));if(undo.length>40)undo.shift()};
@@ -666,7 +674,7 @@ function applyHora(wins,loser,tsumo){
     if(tsumo)st.tsumo++; if(w.seat===oya)st.oyaAgari++;
   });
   if(!tsumo){S.st[loser].houju++;S.st[loser].houjuPts+=-hand[loser]}
-  S.kyotaku=0;S.riichi=[0,0,0,0];S.hands++;
+  S.kyotaku=0;S.riichi=[0,0,0,0];flushNaki();S.hands++;
   const after=S.pts.map((p,i)=>p+d[i]);
   S.log.push({r:S.round,h:S.honba,t:tsumo?"tsumo":"ron",
     w:wins.map(w=>w.seat),l:tsumo?null:loser,d:d.slice(),after});
@@ -676,15 +684,35 @@ function applyRyukyoku(tenpai){
   snap();
   const d=[0,0,0,0],t=tenpai.length;
   if(t>0&&t<4){const g=3000/t,p=3000/(4-t);for(let i=0;i<4;i++)d[i]=tenpai.includes(i)?g:-p}
-  S.riichi=[0,0,0,0];S.hands++;
+  S.riichi=[0,0,0,0];flushNaki();S.hands++;
   const after=S.pts.map((p,i)=>p+d[i]);
   S.log.push({r:S.round,h:S.honba,t:"ryu",w:tenpai.slice(),l:null,d:d.slice(),after});
   toPayment(d,tenpai.includes(dealer()),true,"流局");
 }
 function applyAbort(){
-  snap();S.riichi=[0,0,0,0];
+  snap();S.riichi=[0,0,0,0];S.nk=[0,0,0,0];
   S.log.push({r:S.round,h:S.honba,t:"abort",w:[],l:null,d:[0,0,0,0],after:S.pts.slice()});
   toPayment([0,0,0,0],true,true,"途中流局");
+}
+/* ---- 副露（鳴き） ---- */
+const NAKI=["チー","ポン","カン"];
+function flushNaki(){
+  for(let i=0;i<4;i++){
+    const n=(S.nk&&S.nk[i])||0;
+    if(n>0){S.st[i].naki=(S.st[i].naki||0)+1;S.st[i].nakiN=(S.st[i].nakiN||0)+n}
+  }
+  S.nk=[0,0,0,0];
+}
+function playCall(i,word){
+  if(!R.voice)return;
+  const v=voiceById(voiceOf(S.names[i]));
+  if(v&&v.silent)return;
+  speak(word,(v&&v.synth)?v.synth:{rate:1.1,pitch:1});
+}
+function addNaki(i,word){
+  if(S.phase!=="play")return; snap();
+  if(!Array.isArray(S.nk))S.nk=[0,0,0,0];
+  S.nk[i]++; playCall(i,word); saveGame(); render();
 }
 function toggleRiichi(i){
   if(S.phase!=="play")return; snap();
@@ -771,7 +799,7 @@ function renderSeat(i){
   rot.append(ir);
   // ボタン
   if(S.phase==="play"){
-    const br=ce("div","btnRow");
+    const br=ce("div","btnRow");let nkRow=null;
     if(UI.mode==="table"){
       const rb2=ce("button","sbtn"+(S.riichi[i]?" on":""),"リーチ");
       rb2.onclick=e=>{e.stopPropagation();toggleRiichi(i)};
@@ -780,6 +808,15 @@ function renderSeat(i){
       const rn=ce("button","sbtn","ロン");
       rn.onclick=e=>{e.stopPropagation();startHora(i,false)};
       br.append(rb2,ce("span","sp"),tb,rn);
+      // ツモ・ロンの下に鳴き（副露）の行
+      nkRow=ce("div","btnRow nakiRow");
+      const cnt=(S.nk&&S.nk[i])||0;
+      nkRow.append(ce("span","nkTag"+(cnt?" on":""),cnt?"鳴き "+cnt:"鳴き"),ce("span","sp"));
+      NAKI.forEach(w=>{
+        const b=ce("button","sbtn mini"+(cnt?" on":""),w);
+        b.onclick=e=>{e.stopPropagation();addNaki(i,w)};
+        nkRow.append(b);
+      });
     }else if(UI.mode==="loser"){
       if(UI.winners.includes(i)){
         const cb=ce("button","sbtn big cancel","キャンセル");
@@ -804,6 +841,7 @@ function renderSeat(i){
       br.append(tb);
     }
     rot.append(br);
+    if(nkRow)rot.append(nkRow);
   }
   el.append(rot);
 }
@@ -1342,13 +1380,13 @@ function buildRecord(){
   const mins=Math.max(1,Math.round(((S.end||Date.now())-S.ts)/60000));
   return {gid:S.gid,ts:S.ts,end:S.end||Date.now(),hands:S.hands,note:S.endNote,
     rule:(ru.length==="tonpuu"?"東風":"半荘")+"／ウマ"+ru.umaKey+(ru.oka?"／オカ有":"／オカ無"),
-    umaKey:ru.umaKey,
     umaKey:ru.umaKey,mins,names:S.names.slice(),graph:S.log.map(l=>l.after),
     rows:res.map(x=>{const st=S.st[x.i];
       return {seat:x.i,name:x.name,rank:x.rank,pts:x.pts,score:r1(x.score),
         uma:r1(x.uma+x.oka+(x.yk||0)),total:x.total,hands:S.hands,
         agari:st.agari,houju:st.houju,riichi:st.riichi,tsumo:st.tsumo,
         agariPts:st.agariPts,houjuPts:st.houjuPts,oyaAgari:st.oyaAgari,renchan:st.renchan,
+        naki:st.naki||0,nakiN:st.nakiN||0,
         tobi:x.pts<0?1:0,mins}})};
 }
 let RECS=LS.get(K.h,[]);
@@ -1802,17 +1840,18 @@ function openStats(){
       card.append(ce("p","note",rangeLabel()+(UMAF==="all"?"":"・"+UMAF)+"　"+recs.length+"半荘"));
       const per={};
       recs.forEach(rec=>(rec.rows||[]).forEach(x=>{
-        const o=per[x.name]||(per[x.name]={n:0,pt:0,rk:0,r:[0,0,0,0],ag:0,hj:0,ri:0,tm:0,agP:0,hjP:0,hands:0,tobi:0});
+        const o=per[x.name]||(per[x.name]={n:0,pt:0,rk:0,r:[0,0,0,0],ag:0,hj:0,ri:0,tm:0,agP:0,hjP:0,hands:0,tobi:0,nk:0,nkH:0});
         o.n++;o.pt+=x.total;o.rk+=x.rank;if(x.rank>=1&&x.rank<=4)o.r[x.rank-1]++;
         o.ag+=x.agari||0;o.hj+=x.houju||0;o.ri+=x.riichi||0;o.tm+=x.tsumo||0;
         o.agP+=x.agariPts||0;o.hjP+=x.houjuPts||0;o.hands+=x.hands||0;o.tobi+=x.tobi||0;
+        if(x.naki!==undefined){o.nk+=x.naki||0;o.nkH+=x.hands||0}
       }));
       const rows=Object.keys(per).map(k=>Object.assign({name:k},per[k])).sort((a,b)=>b.pt-a.pt);
       if(!rows.length)card.append(ce("p","note",RANGE==="all"?"まだ記録がありません。半荘を終えると自動で保存されます。":"この期間の記録はありません。"));
       else{
         const sc=ce("div","scroll"),t=ce("table");
         t.innerHTML="<thead><tr><th>プレイヤー</th><th>半荘</th><th>合計pt</th>"+(R.rate?"<th>"+R.rateUnit+"</th>":"")+"<th>平均pt</th><th>平均順位</th>"+
-          "<th>1/2/3/4着</th><th>和了率</th><th>放銃率</th><th>リーチ率</th><th>ツモ率</th>"+
+          "<th>1/2/3/4着</th><th>和了率</th><th>放銃率</th><th>リーチ率</th><th>副露率</th><th>ツモ率</th>"+
           "<th>平均和了点</th><th>平均放銃点</th><th>飛び</th></tr></thead>";
         const tb=ce("tbody");
         rows.forEach(o=>{
@@ -1822,6 +1861,7 @@ function openStats(){
             (R.rate?"<td style='color:"+(o.pt>0?"var(--pos)":(o.pt<0?"var(--red)":"inherit"))+"'>"+(o.pt>0?"+":"")+fmt(money(o.pt))+"</td>":"")+
             "<td>"+r1(o.pt/o.n)+"</td><td>"+(o.rk/o.n).toFixed(2)+"</td><td>"+o.r.join(" / ")+"</td>"+
             "<td>"+pc(o.ag)+"</td><td>"+pc(o.hj)+"</td><td>"+pc(o.ri)+"</td>"+
+            "<td>"+(o.nkH?(o.nk/o.nkH*100).toFixed(1)+"%":"—")+"</td>"+
             "<td>"+(o.ag?(o.tm/o.ag*100).toFixed(1)+"%":"—")+"</td>"+
             "<td>"+(o.ag?fmt(o.agP/o.ag):"—")+"</td><td>"+(o.hj?fmt(o.hjP/o.hj):"—")+"</td><td>"+o.tobi+"</td>";
           tb.append(tr);
