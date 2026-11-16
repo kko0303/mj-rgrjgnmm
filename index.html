@@ -342,6 +342,16 @@ svg text{font-family:var(--num);font-variant-numeric:tabular-nums}
 <script>
 "use strict";
 const CFG=Object.assign({endpoint:"",key:""},window.JT_CONFIG||{});
+const TEST_MODE=new URLSearchParams(location.search).get("test")==="1";
+if(TEST_MODE){
+  CFG.endpoint="https://script.google.com/macros/s/AKfycby9bvN5Tv_B4krvsr1GO-jTwvuu48074hDp6NSQW_qi-ZOLwXhYgrTot07aD1bA8K88/exec";
+  CFG.key="mjperopero";
+  document.title="雀卓スコア【テスト】";
+  const _tb=document.createElement("div");
+  _tb.textContent="⚠ テストモード中(本番とは別のデータに接続しています)";
+  _tb.style.cssText="position:fixed;top:0;left:0;right:0;z-index:99999;background:#c0392b;color:#fff;text-align:center;font-size:12px;padding:6px 8px;font-weight:700";
+  document.body.appendChild(_tb);
+}
 const K={r:"jt2.rules",g:"jt2.game",h:"jt2.recs",m:"jt2.members",rot:"jt2.rot",p:"jt2.pending"};
 const LS={
   get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},
