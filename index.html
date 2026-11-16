@@ -47,7 +47,13 @@ img{max-width:100%}
 #table{flex:1;display:grid;min-height:0;
   grid-template-columns:1.15fr 2fr 1.15fr;grid-template-rows:1fr 1.1fr 1fr;
   background:radial-gradient(ellipse at center,#12402F 0%,#0C2C20 48%,#061913 100%);
-  gap:5px;padding:5px}
+  transition:background .4s ease;gap:5px;padding:5px}
+#table.ba1{background:radial-gradient(ellipse at center,#4A2A20 0%,#331A12 48%,#190B07 100%)}
+#table.ba2{background:radial-gradient(ellipse at center,#1B3A58 0%,#11283D 48%,#07131F 100%)}
+#table.ba3{background:radial-gradient(ellipse at center,#3A2550 0%,#261636 48%,#120A1C 100%)}
+.bbadge{font-family:var(--mincho);font-size:16px;line-height:1;padding:5px 9px;border-radius:7px;
+  background:#2A6FB8;color:#fff;flex:none}
+.bbadge.b1{background:#B8423A}.bbadge.b2{background:#7A49B8}.bbadge.b3{background:#3F8F6A}
 .corner{display:flex;align-items:center;justify-content:center;padding:6px}
 .c-tl{grid-area:1/1;justify-content:flex-start;align-items:flex-start}
 .c-tr{grid-area:1/3}.c-bl{grid-area:3/1}
@@ -68,21 +74,22 @@ img{max-width:100%}
   box-shadow:inset -6px 0 0 #8CCBFF,inset -14px 0 26px -6px rgba(140,203,255,.6)}
 @keyframes wallFlash{0%,44%{opacity:1}52%,100%{opacity:0}}
 .seat .rot{position:absolute;top:50%;left:50%;transform-origin:center;
-  display:flex;flex-direction:column;justify-content:center;gap:4px;padding:7px 10px}
+  display:flex;flex-direction:column;justify-content:center;gap:3px;padding:4px 10px}
 .s0 .rot{transform:translate(-50%,-50%)}
 .s1 .rot{transform:translate(-50%,-50%) rotate(-90deg)}
 .s2 .rot{transform:translate(-50%,-50%) rotate(180deg)}
 .s3 .rot{transform:translate(-50%,-50%) rotate(90deg)}
-.nameRow{display:flex;align-items:center;gap:7px;min-height:22px}
+.nameRow{display:flex;align-items:center;gap:7px;min-height:20px}
 .wbadge{font-family:var(--mincho);font-size:15px;line-height:1;padding:3px 6px;border-radius:5px;
   background:var(--gold);color:#1a1205;flex:none}
 .wbadge.oya{background:var(--red);color:#fff}
 .pname{font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;min-width:0;text-align:left}
 .infoRow{display:flex;align-items:flex-end;justify-content:space-between;gap:10px}
-.rankBox{font-family:var(--num);font-size:15px;line-height:1.25;color:var(--dim);text-align:left;flex:none}
+.rankBox{font-family:var(--num);font-size:15px;line-height:1.25;color:var(--dim);text-align:left;flex:none;
+  display:flex;align-items:baseline;flex-wrap:wrap;gap:0 9px}
 .rankBox b{color:var(--ink);font-weight:700}
 .rankBox b.r1{color:var(--gold)}
-.rankBox small{display:block;font-size:11px;color:var(--faint);font-family:var(--jp);white-space:nowrap}
+.rankBox small{display:inline-block;font-size:11px;line-height:1.3;color:var(--faint);font-family:var(--jp);white-space:nowrap}
 .rankBox small .gu{color:#E08C7A;font-style:normal}
 .rankBox small .gd{color:#5FBF95;font-style:normal}
 .pts{font-family:var(--num);font-weight:700;font-size:clamp(28px,6.2vh,52px);line-height:1;
@@ -94,23 +101,24 @@ img{max-width:100%}
 .calc .b.up{color:var(--pos)}.calc .b.down{color:var(--red)}
 .calc .c{font-size:clamp(24px,5vh,42px);font-weight:700;border-top:1px solid var(--dim);
   padding-top:1px;margin-top:1px}
-.btnRow{display:flex;gap:6px;align-items:center}
-.nakiRow{margin-top:1px}
+.btnRow{display:flex;gap:7px;align-items:center}
+.nakiRow{margin-top:0}
 .nkTag{font-size:10px;color:var(--faint);letter-spacing:.04em}
 .nkTag.on{color:var(--gold)}
-.sbtn.mini{min-width:44px;padding:1px 0;font-size:11px;border-radius:6px;line-height:1.45;
-  background:linear-gradient(180deg,#4C7A5E,#355A44);border-color:#6FA585}
-.sbtn.mini.on{background:linear-gradient(180deg,#5E9A74,#3F6B50)}
-.btnRow .sp{flex:1}
-.sbtn{padding:6px 0;min-width:62px;text-align:center;border-radius:7px;font-size:14px;
+/* 鳴きはツモ・ロンと取り違えないよう、小さく・灰色で離して置く */
+.sbtn.mini{min-width:52px;max-width:96px;flex:0 0 auto;padding:2px 8px;font-size:11px;border-radius:12px;line-height:1.5;
+  background:#1B3A2D;border:1px solid #3F6B55;color:#9FBFAE;font-weight:400}
+.sbtn.mini.on{background:#3F6B55;color:#fff;border-color:#6FA585}
+.btnRow .sp{flex:1 1 14px;min-width:0}
+.sbtn{padding:15px 0;min-width:66px;max-width:124px;flex:1 1 auto;text-align:center;border-radius:9px;font-size:17px;
   background:linear-gradient(180deg,#3A6FA8,#2C5988);border:1px solid #5A92C8;color:#fff}
 .sbtn:active{filter:brightness(1.25)}
 .sbtn.on{background:linear-gradient(180deg,#D2564A,#A8382E);border-color:#E87A6F}
-.sbtn.big{flex:1;padding:14px 0;font-size:17px;font-weight:600}
+.sbtn.big{flex:1;max-width:none;padding:20px 0;font-size:21px;font-weight:600}
 .sbtn.dan{background:linear-gradient(180deg,#B8443A,#8E2E26);border-color:#D2564A}
 .sbtn.ok{background:linear-gradient(180deg,#3E9E77,#2B7457);border-color:#5FBF95}
 .sbtn[disabled]{opacity:.95;cursor:default}
-.sbtn small{display:block;font-size:11px;opacity:.85;font-weight:400}
+.sbtn small{display:block;font-size:12px;opacity:.85;font-weight:400}
 .sbtn.cancel{background:linear-gradient(180deg,#3A6FA8,#2C5988)}
 .delta{position:absolute;top:50%;left:50%;font-family:var(--num);font-weight:700;font-size:26px;opacity:0;pointer-events:none}
 .up{color:var(--pos)}.down{color:var(--red)}
@@ -163,24 +171,27 @@ img{max-width:100%}
 .shead{flex:none;height:44px;display:flex;align-items:center;justify-content:space-between;
   padding:0 10px;background:#04100C;border-bottom:1px solid var(--line)}
 .shead .t{font-size:16px}
-.sbody{flex:1;overflow:auto;padding:14px;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.sfoot{flex:none;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;gap:10px;
+.sbody{flex:1;min-height:0;overflow:auto;padding:8px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start}
+.sfoot{flex:none;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;gap:10px;
   border-top:1px solid var(--line);background:#04100C}
-.panel{width:min(560px,100%);border:1px solid var(--line);border-radius:12px;background:var(--felt);overflow:hidden}
+.sfoot .btn{padding:16px 34px;font-size:19px;border-radius:11px;min-width:150px}
+.shead .barbtn{padding:10px 16px}
+.panel{width:min(1600px,100%);border:1px solid var(--line);border-radius:12px;background:var(--felt);
+  overflow:hidden;flex:1 1 auto;display:flex;flex-direction:column;min-height:0}
 .panel .ph{display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid var(--line);flex-wrap:wrap}
-.readout{padding:12px 16px;text-align:right;font-family:var(--num);font-variant-numeric:tabular-nums;
-  font-size:44px;font-weight:700;line-height:1;border-bottom:1px solid var(--line);min-height:70px}
+.readout{padding:10px 18px;text-align:right;font-family:var(--num);font-variant-numeric:tabular-nums;
+  font-size:clamp(34px,8vh,56px);font-weight:700;line-height:1.05;border-bottom:1px solid var(--line);min-height:56px}
 .readout small{display:block;font-size:13px;color:var(--dim);font-family:var(--jp);font-weight:400;margin-top:4px}
 .tabs{display:flex;border-bottom:1px solid var(--line)}
-.tabs button{flex:1;padding:11px 4px;font-size:14px;color:var(--dim);background:var(--felt2);border-right:1px solid var(--line)}
+.tabs button{flex:1;padding:14px 4px;font-size:16px;color:var(--dim);background:var(--felt2);border-right:1px solid var(--line)}
 .tabs button:last-child{border-right:0}
 .tabs button.on{background:var(--gold);color:#1a1205;font-weight:600}
-.pad{display:grid;gap:6px;padding:10px}
-.g4{grid-template-columns:repeat(4,1fr)}
+.pad{display:grid;gap:8px;padding:10px;align-content:stretch;grid-auto-rows:minmax(56px,1fr);flex:1 1 auto}
+.g4{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
 .g3{grid-template-columns:repeat(3,1fr)}
-.g6{grid-template-columns:repeat(6,1fr)}
-.g7{grid-template-columns:repeat(7,1fr)}
-.k{padding:12px 2px;text-align:center;border-radius:7px;font-family:var(--num);font-size:15px;font-weight:600;
+.g6{grid-template-columns:repeat(auto-fit,minmax(104px,1fr))}
+.g7{grid-template-columns:repeat(auto-fit,minmax(104px,1fr))}
+.k{padding:22px 4px;text-align:center;border-radius:9px;font-family:var(--num);font-size:20px;font-weight:600;
   background:linear-gradient(180deg,#3A6FA8,#2C5988);border:1px solid #5A92C8;color:#fff;
   font-variant-numeric:tabular-nums}
 .k.hi{background:linear-gradient(180deg,#B8443A,#8E2E26);border-color:#D2564A}
@@ -188,11 +199,12 @@ img{max-width:100%}
 .k.on{background:var(--gold);border-color:var(--gold);color:#1a1205}
 .k[disabled]{opacity:.3}
 .wtabs{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
-.wtabs button{padding:6px 11px;border-radius:7px;border:1px solid var(--line);font-size:13px;color:var(--dim)}
+.wtabs button{padding:9px 15px;border-radius:8px;border:1px solid var(--line);font-size:15px;color:var(--dim)}
 .wtabs button.on{border-color:var(--gold);color:var(--ink);background:var(--felt3)}
 .wtabs .add{border-style:dashed;color:var(--gold)}
 
-.btn{padding:10px 18px;border-radius:9px;border:1px solid var(--line);background:var(--felt2);font-size:14px;color:var(--ink)}
+.btn{padding:12px 20px;border-radius:9px;border:1px solid var(--line);background:var(--felt2);font-size:15px;color:var(--ink)}
+.corner .btn{padding:16px 26px;font-size:19px;border-radius:11px}
 .btn:active{background:var(--felt3)}
 .btn.primary{background:linear-gradient(180deg,#B8443A,#8E2E26);border-color:#D2564A;color:#fff;font-weight:600}
 .btn.gold{background:var(--gold);color:#1a1205;border-color:var(--gold);font-weight:600}
@@ -209,6 +221,33 @@ img{max-width:100%}
 .lbl{font-size:11px;color:var(--faint);letter-spacing:.08em;width:100%;margin-bottom:-2px}
 .chip{padding:8px 14px;border-radius:9px;border:1px solid var(--line);font-size:14px;color:var(--dim);background:var(--felt2)}
 .chip small{font-family:var(--num);opacity:.7;margin-left:5px}
+.pickrow{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:11px 12px;
+  margin-bottom:6px;border-radius:10px;border:1px solid var(--line);background:var(--felt2);color:var(--ink)}
+.pickrow.on{border-color:var(--gold);background:var(--felt3)}
+.pickbox{flex:none;width:26px;height:26px;border-radius:7px;border:2px solid var(--line);
+  display:grid;place-items:center;font-size:16px;color:#1a1205;background:transparent}
+.pickrow.on .pickbox{background:var(--gold);border-color:var(--gold)}
+.picktx{display:block;min-width:0}
+.picktx b{display:block;font-family:var(--num);font-size:14px;font-weight:600}
+.picktx small{display:block;font-size:12px;color:var(--dim);margin-top:2px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+/* スタート画面 */
+#home{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:10px;padding:20px;overflow:auto}
+.hometitle{font-family:var(--mincho);font-size:30px;letter-spacing:.18em;color:var(--gold);line-height:1.2}
+.homesub{font-size:11px;color:var(--faint);letter-spacing:.06em}
+.homebtns{display:flex;flex-direction:column;gap:10px;width:min(420px,92%);margin-top:6px}
+.hbtn{padding:15px 18px;border-radius:14px;border:1px solid var(--line);background:var(--felt2);
+  color:var(--ink);font-size:17px;text-align:left;display:flex;align-items:center;
+  justify-content:space-between;gap:10px}
+.hbtn small{display:block;font-size:11px;color:var(--dim);margin-top:3px;font-weight:400}
+.hbtn .rt{font-family:var(--num);font-size:13px;color:var(--dim);flex:none}
+.hbtn.gold{background:linear-gradient(180deg,#E0B252,#C08F2E);color:#1a1205;border-color:#E0B252}
+.hbtn.gold small{color:#4a3508}
+.hbtn.resume{background:linear-gradient(180deg,#3E9E77,#2B7457);border-color:#5FBF95;color:#fff}
+.hbtn.resume .rt{color:#DFF3E9}
+.hbtn:active{filter:brightness(1.15)}
+.hfoot{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:8px}
 .vizbox{border:1px solid var(--line);border-radius:12px;background:var(--felt2);padding:12px;margin-bottom:12px}
 .vizttl{font-size:13px;color:var(--dim);margin-bottom:10px;letter-spacing:.04em}
 .vrow{display:flex;align-items:center;gap:10px;margin-bottom:7px}
@@ -253,7 +292,7 @@ th{font-family:var(--jp);font-size:11px;color:var(--faint);font-weight:500}
 .scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
 .sec{margin:18px 0 8px;font-size:12px;color:var(--faint);letter-spacing:.08em}
 .field{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--dim)}
-.field input,.field select{background:var(--felt2);border:1px solid var(--line);border-radius:8px;
+.field input,.field select{background:var(--felt2);border:1px solid var(--line);border-radius:8px;min-height:40px;
   padding:8px 10px;color:var(--ink);font:inherit;font-size:14px;min-width:0;width:100%}
 .sw{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid var(--line);font-size:14px}
 .sw small{display:block;color:var(--faint);font-size:11px;margin-top:2px}
@@ -294,6 +333,7 @@ svg text{font-family:var(--num);font-variant-numeric:tabular-nums}
     <div class="seat s3" data-seat="3"></div>
     <div id="center"></div>
   </div>
+  <div id="home" hidden></div>
 </div>
 <div id="scr" hidden></div>
 <div id="ov" hidden></div>
@@ -621,7 +661,77 @@ function announce(){
   if(S.dice)t+=`。サイコロ${S.dice.sum}、${yomiOf(S.names[S.dice.seat])}の山から`;
   speak(t);
 }
-function startHand(){rollDice();startWallGlow();resetUI();S.phase="play";S.lastAt=Date.now();saveGame();render();announce();pushGame()}
+/* 局の開始時点を控えておく（あとで「この局からやり直す」ため） */
+function snapHand(){
+  if(!Array.isArray(S.snaps))S.snaps=[];
+  const i=(S.log||[]).length;
+  S.snaps[i]={pts:S.pts.slice(),round:S.round,honba:S.honba,kyotaku:S.kyotaku,
+    riichi:(S.riichi||[0,0,0,0]).slice(),nk:(S.nk||[0,0,0,0]).slice(),
+    ext:S.ext,warepai:S.warepai,hands:S.hands,
+    st:JSON.parse(JSON.stringify(S.st))};
+  S.snaps.length=i+1;
+}
+function startHand(){snapHand();rollDice();startWallGlow();resetUI();S.phase="play";S.lastAt=Date.now();saveGame();render();announce();pushGame()}
+/* 指定の局の開始時点まで戻す */
+function rewindTo(i){
+  const sn=(S.snaps||[])[i];
+  if(!sn)return false;
+  S.pts=sn.pts.slice();S.round=sn.round;S.honba=sn.honba;S.kyotaku=sn.kyotaku;
+  S.riichi=sn.riichi.slice();S.nk=(sn.nk||[0,0,0,0]).slice();
+  S.ext=sn.ext;S.warepai=sn.warepai;S.hands=sn.hands;
+  S.st=JSON.parse(JSON.stringify(sn.st));
+  S.log=(S.log||[]).slice(0,i);
+  S.snaps=(S.snaps||[]).slice(0,i);
+  S.done=false;S.endNote="";S.pay=null;S.end=null;S.phase="play";
+  undo=[];resetUI();
+  return true;
+}
+/* 局をやり直す画面 */
+function openRewind(fromResult){
+  openOv((card,close)=>{
+    const h=ce("div","row");h.style.justifyContent="space-between";
+    h.append(ce("h2",null,"局をやり直す"),rotBtn());card.append(h);
+    card.append(ce("p","lead","入力を間違えた局を選ぶと、その局の開始時点（点棒・本場・供託・リーチ棒すべて）まで巻き戻して打ち直せます。"));
+    const snaps=S.snaps||[],log=S.log||[];
+    if(!snaps.length){
+      card.append(ce("p","note","やり直せる局がありません。"));
+    }else{
+      log.forEach((l,i)=>{
+        if(!snaps[i])return;
+        const ky=BAKA[Math.floor(l.r/4)]+KANJI[l.r%4]+"局"+(l.h?" "+l.h+"本場":"");
+        let res="";
+        if(l.t==="ron")res="ロン "+l.w.map(w=>S.names[w]).join("・")+" ← "+S.names[l.l];
+        else if(l.t==="tsumo")res="ツモ "+S.names[l.w[0]];
+        else if(l.t==="ryu")res="流局 "+l.w.length+"人テンパイ";
+        else if(l.t==="kyotaku")res="供託の精算";
+        else res="途中流局";
+        const b=ce("button","pickrow");
+        const tx=ce("span","picktx");
+        tx.append(ce("b",null,ky+" から打ち直す"));
+        tx.append(ce("small",null,"この局の結果： "+res+"　→　"+l.after.map((pp,k)=>S.names[k]+" "+fmt(pp)).join("／")));
+        b.append(ce("span","pickbox","↺"),tx);
+        b.onclick=()=>{
+          if(b.dataset.armed){
+            const wasDone=S.done,gid=S.gid;
+            if(rewindTo(i)){
+              if(wasDone)dropRecord(gid);
+              saveGame();close();HOME=false;render();startHand();
+            }
+            return;
+          }
+          [...card.querySelectorAll(".pickrow")].forEach(x=>{delete x.dataset.armed});
+          b.dataset.armed="1";
+          tx.querySelector("b").textContent=ky+" から打ち直す（もう一度押す）";
+        };
+        card.append(b);
+      });
+      if(!log.length)card.append(ce("p","note","まだ1局も終わっていません。"));
+    }
+    const f=ce("div","row");f.style.justifyContent="flex-end";f.style.marginTop="14px";
+    const c0=ce("button","btn gold","閉じる");c0.onclick=close;
+    f.append(c0);card.append(f);
+  });
+}
 function finish(note){
   if(S.kyotaku>0){
     const rk=ranks(),top=rk.indexOf(1);
@@ -695,7 +805,6 @@ function applyAbort(){
   toPayment([0,0,0,0],true,true,"途中流局");
 }
 /* ---- 副露（鳴き） ---- */
-const NAKI=["チー","ポン","カン"];
 function flushNaki(){
   for(let i=0;i<4;i++){
     const n=(S.nk&&S.nk[i])||0;
@@ -703,16 +812,12 @@ function flushNaki(){
   }
   S.nk=[0,0,0,0];
 }
-function playCall(i,word){
-  if(!R.voice)return;
-  const v=voiceById(voiceOf(S.names[i]));
-  if(v&&v.silent)return;
-  speak(word,(v&&v.synth)?v.synth:{rate:1.1,pitch:1});
-}
-function addNaki(i,word){
+function addNaki(i){
   if(S.phase!=="play")return; snap();
   if(!Array.isArray(S.nk))S.nk=[0,0,0,0];
-  S.nk[i]++; playCall(i,word); saveGame(); render();
+  S.nk[i]++;
+  if(R.voice){try{chime()}catch(e){}}
+  saveGame(); render();
 }
 function toggleRiichi(i){
   if(S.phase!=="play")return; snap();
@@ -743,11 +848,48 @@ function startWallGlow(){
   clearTimeout(wallTimer);
   wallTimer=setTimeout(()=>{wallUntil=0;render()},WALL_MS+150);
 }
+/* ---- スタート画面 ---- */
+let HOME=true;
+function goHome(){HOME=true;closeScreen();closeOv();render()}
+function renderHome(){
+  $("#bar").hidden=true;$("#table").hidden=true;
+  const h=$("#home");h.hidden=false;h.innerHTML="";
+  h.append(ce("div","hometitle","雀卓スコア"));
+  h.append(ce("div","homesub",RECS.length?RECS.length+" 半荘を記録中":"半荘を終えると自動で記録されます"));
+  const box=ce("div","homebtns");
+  const mk=(cls,label,note,right,fn)=>{
+    const b=ce("button","hbtn"+(cls?" "+cls:""));
+    const L=ce("div");L.append(ce("div",null,label));if(note)L.append(ce("small",null,note));
+    b.append(L);if(right)b.append(ce("span","rt",right));
+    b.onclick=fn;box.append(b);return b;
+  };
+  if(S&&S.phase&&S.phase!=="setup"&&!S.done){
+    mk("resume","続きから","中断した半荘を再開します",
+      BAKA[bakaIdx()]+KANJI[S.round%4]+"局"+(S.honba?" "+S.honba+"本場":""),
+      ()=>{HOME=false;render()});
+  }
+  mk("gold","新規対局","メンバーを選んで始める",null,()=>{
+    S=newGame();undo=[];resetUI();saveGame();HOME=false;render();openSeatPicker();
+  });
+  mk(null,"成績分析","期間・ルール別の成績とグラフ、精算",null,()=>openStats("stats"));
+  mk(null,"対局履歴","半荘ごとの記録を見る",null,()=>openStats("history"));
+  h.append(box);
+  const ft=ce("div","hfoot");
+  [["名簿・ボイス",openMembers],["設定",openSettings],["接続端末",openDevices]].forEach(([t,fn])=>{
+    const b=ce("button","btn sm ghost",t);b.onclick=fn;ft.append(b);
+  });
+  h.append(ft);
+  if(syncOn())refreshSyncBadge();
+}
 function render(){
+  if(HOME){renderHome();return}
+  $("#home").hidden=true;$("#bar").hidden=false;$("#table").hidden=false;
   const bm=$("#barMid");bm.innerHTML="";
+  $("#table").className=S.phase==="setup"?"":("ba"+bakaIdx());
   if(S.phase==="setup") bm.append(ce("b",null,"席決め"));
   else{
-    bm.append(ce("b",null,BAKA[bakaIdx()]+KANJI[S.round%4]+"局"));
+    bm.append(ce("span","bbadge b"+bakaIdx(),BAKA[bakaIdx()]));
+    bm.append(ce("b",null,KANJI[S.round%4]+"局"));
     if(S.honba)bm.append(ce("span",null,S.honba+"本場"));
     if(S.ext>0)bm.append(ce("span",null,"サドンデス"));
     if(S.phase==="pay")bm.append(ce("span",null,"— "+(S.pay?S.pay.label:"")+"の支払い"));
@@ -811,12 +953,10 @@ function renderSeat(i){
       // ツモ・ロンの下に鳴き（副露）の行
       nkRow=ce("div","btnRow nakiRow");
       const cnt=(S.nk&&S.nk[i])||0;
-      nkRow.append(ce("span","nkTag"+(cnt?" on":""),cnt?"鳴き "+cnt:"鳴き"),ce("span","sp"));
-      NAKI.forEach(w=>{
-        const b=ce("button","sbtn mini"+(cnt?" on":""),w);
-        b.onclick=e=>{e.stopPropagation();addNaki(i,w)};
-        nkRow.append(b);
-      });
+      nkRow.append(ce("span","sp"));
+      const nb=ce("button","sbtn mini"+(cnt?" on":""),cnt?"鳴き "+cnt:"鳴き");
+      nb.onclick=e=>{e.stopPropagation();addNaki(i)};
+      nkRow.append(nb);
     }else if(UI.mode==="loser"){
       if(UI.winners.includes(i)){
         const cb=ce("button","sbtn big cancel","キャンセル");
@@ -900,7 +1040,7 @@ function renderCorners(){
     const b=ce("button","btn primary","流局");
     b.onclick=()=>{UI.mode="ryu";UI.tenpai=[0,1,2,3].filter(i=>S.riichi[i]);render()};
     br.append(b);
-    const g=ce("button","btn sm ghost","成績");g.onclick=openStats;bl.append(g);
+    const g=ce("button","btn sm ghost","成績");g.onclick=()=>openStats("stats");bl.append(g);
   }else if(UI.mode==="ryu"){
     const b=ce("button","btn gold","次へ");
     b.onclick=()=>{const t=UI.tenpai.slice();resetUI();applyRyukyoku(t)};
@@ -969,6 +1109,7 @@ function openScore(){
   const draw=()=>{
     scr.innerHTML="";
     const seat=UI.winners[Math.min(UI.cur,UI.winners.length-1)],I=getInp(seat);
+    if(I.mode==="fuhan"&&I.base==null)I.base=basePts(I.fu,I.han);
     // ヘッダ
     const hd=ce("div","shead");
     const back=ce("button","barbtn","‹ 戻る");
@@ -1003,26 +1144,32 @@ function openScore(){
     ph.append(tabs);
     if(!UI.tsumo&&UI.loser!=null) ph.append(ce("span","note","放銃 "+S.names[UI.loser]));
     pn.append(ph);
-    // 表示
+    // 表示（入力中はここだけ描き直す）
     const ro=ce("div","readout");
-    let head="0",sub="";
-    if(I.mode==="raw"&&UI.tsumo) head=seat===dealer()?fmt(I.rk||0)+" all":fmt(I.rk||0)+" / "+fmt(I.ro||0);
-    else if(I.mode==="raw") head=fmt(I.raw||0);
-    else if(I.base){
-      if(UI.tsumo){const p=payTsumo(seat,I.base);head=seat===dealer()?fmt(p.each)+" all":fmt(p.ko)+" / "+fmt(p.oya)}
-      else head=fmt(ronTotal(seat,I.base));
-    }
-    if(I.mode==="fuhan"&&I.base){
-      const ki=R.kiriage&&((I.han===4&&I.fu===30)||(I.han===3&&I.fu===60));
-      sub=I.fu+"符 "+I.han+"翻"+(ki?"（切り上げ満貫）":(I.han>=6?"（跳満）":(I.han===5?"（満貫）":"")));
-    }
-    ro.append(document.createTextNode(head));
-    if(S.honba||S.kyotaku||sub){
-      const ex=[];if(sub)ex.push(sub);
-      if(S.honba)ex.push(S.honba+"本場 +"+(UI.tsumo?"各100":"300"));
-      if(S.kyotaku)ex.push("供託 "+fmt(S.kyotaku*1000));
-      ro.append(ce("small",null,ex.join("　")));
-    }
+    let nextBtn=null;
+    const paintRO=()=>{
+      ro.innerHTML="";
+      let head="0",sub="";
+      if(I.mode==="raw"&&UI.tsumo) head=seat===dealer()?fmt(I.rk||0)+" all":fmt(I.rk||0)+" / "+fmt(I.ro||0);
+      else if(I.mode==="raw") head=fmt(I.raw||0);
+      else if(I.base){
+        if(UI.tsumo){const p=payTsumo(seat,I.base);head=seat===dealer()?fmt(p.each)+" all":fmt(p.ko)+" / "+fmt(p.oya)}
+        else head=fmt(ronTotal(seat,I.base));
+      }
+      if(I.mode==="fuhan"&&I.base){
+        const ki=R.kiriage&&((I.han===4&&I.fu===30)||(I.han===3&&I.fu===60));
+        sub=I.fu+"符 "+I.han+"翻"+(ki?"（切り上げ満貫）":(I.han>=6?"（跳満）":(I.han===5?"（満貫）":"")));
+      }
+      ro.append(document.createTextNode(head));
+      if(S.honba||S.kyotaku||sub){
+        const ex=[];if(sub)ex.push(sub);
+        if(S.honba)ex.push(S.honba+"本場 +"+(UI.tsumo?"各100":"300"));
+        if(S.kyotaku)ex.push("供託 "+fmt(S.kyotaku*1000));
+        ro.append(ce("small",null,ex.join("　")));
+      }
+      if(nextBtn)nextBtn.disabled=UI.winners.some(x=>!winValue(x));
+    };
+    paintRO();
     pn.append(ro);
     // タブ
     const tb=ce("div","tabs");
@@ -1060,7 +1207,7 @@ function openScore(){
         const f=ce("div","field");f.append(ce("label",null,lbl));
         const i2=ce("input");i2.type="number";i2.inputMode="numeric";i2.step="100";
         i2.id="raw_"+key+"_"+seat;i2.value=I[key]||"";
-        i2.oninput=()=>{I[key]=+i2.value||0;const r=$(".readout");if(r)draw()};
+        i2.oninput=()=>{I[key]=+i2.value||0;paintRO()};
         f.append(i2);wrap.append(f);
       });
       pn.append(wrap);
@@ -1070,6 +1217,7 @@ function openScore(){
     const ft=ce("div","sfoot");
     const note=ce("div","note",UI.winners.length>1?"ダブロン："+UI.winners.map(s=>S.names[s]).join("・"):"");
     const next=ce("button","btn primary","次へ");
+    nextBtn=next;
     next.disabled=UI.winners.some(s=>!winValue(s));
     next.onclick=()=>{
       const wins=winsFrom(),loser=UI.loser,tsumo=UI.tsumo;
@@ -1183,6 +1331,9 @@ function openSeatPicker(seat){
       mng.onclick=()=>{close();openMembers()};card.append(mng);
       const ft=ce("div","row");ft.style.justifyContent="flex-end";ft.style.marginTop="12px";
       if(setup){
+        const cancel=ce("button","btn ghost","やめる");
+        cancel.onclick=()=>{close();goHome()};
+        ft.append(cancel);
         const ok=ce("button","btn gold","この並びで開始");
         ok.disabled=S.names.some(n=>!n);
         ok.onclick=()=>{
@@ -1458,6 +1609,43 @@ async function pushSettings(){
   if(!syncOn())return;
   try{await syncCall({action:"putState",name:"settings",json:settingsBlob()})}catch(e){}
 }
+/* ---- 精算済みの半荘（端末間で共有） ---- */
+let SETTLED=LS.get("jt2.settled",{})||{};
+const saveSettled=()=>LS.set("jt2.settled",SETTLED);
+const isSettled=g=>!!SETTLED[g];
+async function syncDeleteRec(gid){
+  if(!syncOn())return false;
+  try{const j=await syncCall({action:"deleteRec",gid});return !!j.ok}catch(e){return false}
+}
+/* 記録を取り消す（端末の控えとスプレッドシートの両方） */
+function dropRecord(gid){
+  if(!gid)return;
+  RECS=RECS.filter(r=>r.gid!==gid);saveRecs();
+  if(PICK.has(gid)){PICK.delete(gid);savePick()}
+  if(SETTLED[gid]){delete SETTLED[gid];saveSettled();pushSettled()}
+  syncDeleteRec(gid);
+}
+async function pushSettled(){
+  if(!syncOn())return;
+  try{await syncCall({action:"putState",name:"settled",json:{at:Date.now(),map:SETTLED}})}catch(e){}
+}
+function applySettled(rm){
+  if(!rm||!rm.map)return false;
+  let ch=false;
+  Object.keys(rm.map).forEach(g=>{if(!SETTLED[g]){SETTLED[g]=rm.map[g];ch=true}});
+  if(ch)saveSettled();
+  if(Object.keys(SETTLED).some(g=>!rm.map[g]))pushSettled();
+  return ch;
+}
+function markSettled(gids){
+  const now=Date.now();
+  gids.forEach(g=>{if(g)SETTLED[g]=now});
+  saveSettled();pushSettled();
+}
+function unmarkSettled(gids){
+  gids.forEach(g=>{delete SETTLED[g]});
+  saveSettled();pushSettled();
+}
 function applySettings(rm){
   if(!rm)return false;
   const mine=setAt(),remoteNewer=(rm.at||0)>mine;
@@ -1515,6 +1703,7 @@ async function syncState(){
     const j=await syncCall({action:"getState"});
     const st=j.state||{};
     if(applySettings(st.settings))render();
+    applySettled(st.settled);
     if((st.settings&&(st.settings.at||0))<setAt())pushSettings();
     offerRemoteGame(st.game);
   }catch(e){}
@@ -1568,7 +1757,12 @@ function openResult(){
     b2.onclick=()=>{const n=S.names.slice();S=newGame([n[1],n[2],n[3],n[0]]);undo=[];close();startHand()};
     const b3=ce("button","btn gold","メンバーを変えて次へ");
     b3.onclick=()=>{S=newGame();undo=[];saveGame();close();render();openSeatPicker()};
-    f.append(b0,b2,b3);card.append(f);
+    const bf=ce("button","btn","間違えた局をやり直す");
+    bf.onclick=()=>{close();openRewind(true)};
+    f.append(bf);
+    const b4=ce("button","btn","保存してスタートに戻る");
+    b4.onclick=()=>{pushRecord();close();goHome()};
+    f.append(b0,b2,b3,b4);card.append(f);
     const nn=S.names.slice(),nx=[nn[1],nn[2],nn[3],nn[0]];
     card.append(ce("p","note","「同じ並びで次へ」は座る場所は変えずに、起家だけひとつ送ります（前の東家が北家へ）。次は "+
       ["東","南","西","北"].map((w,i)=>w+"＝"+(nx[i]||"—")).join(" / ")+" です。"));
@@ -1649,7 +1843,10 @@ function graphEl(series,names,start){
 
 /* ---- 成績 ---- */
 let RANGE=LS.get("jt2.range","all"),RFROM="",RTO="";
-const RANGES=[["全期間","all"],["直近24時間","24h"],["直近3日","3d"],["直近7日","7d"],["直近30日","30d"],["期間を指定","custom"]];
+let RGAMES=Math.max(1,+LS.get("jt2.rgames",4)||4);
+let PICK=new Set(LS.get("jt2.pick",[]));
+const savePick=()=>LS.set("jt2.pick",[...PICK]);
+const RANGES=[["未精算","unsettled"],["全期間","all"],["半荘を選ぶ","pick"],["直近の半荘","games"],["直近24時間","24h"],["直近3日","3d"],["直近7日","7d"],["直近30日","30d"],["期間を指定","custom"]];
 function rangeFrom(){
   const D=864e5;
   if(RANGE==="24h")return Date.now()-D;
@@ -1670,12 +1867,19 @@ function umaOf(rec){
   return m?m[1].trim():"不明";
 }
 function inRange(r){
-  if(RANGE==="all")return true;
+  if(RANGE==="unsettled")return !isSettled(r.gid);
+  if(RANGE==="pick")return PICK.has(r.gid);
+  if(RANGE==="all"||RANGE==="games")return true;
   const a=rangeFrom(),b=rangeTo(),t=r.end||r.ts;
   return t>=a&&t<=b;
 }
 function filteredRecs(){
-  return RECS.filter(r=>inRange(r)&&(UMAF==="all"||umaOf(r)===UMAF));
+  const a=RECS.filter(r=>inRange(r)&&(UMAF==="all"||umaOf(r)===UMAF));
+  if(RANGE==="games"){
+    a.sort((x,y)=>(y.end||y.ts)-(x.end||x.ts));
+    return a.slice(0,Math.max(1,RGAMES));
+  }
+  return a;
 }
 
 /* ===== 可視化 ===== */
@@ -1777,6 +1981,9 @@ function trendEl(recs,names){
 }
 function rangeLabel(){
   const o=RANGES.find(x=>x[1]===RANGE);
+  if(RANGE==="unsettled")return "未精算";
+  if(RANGE==="pick")return "選んだ"+PICK.size+"半荘";
+  if(RANGE==="games")return "直近"+RGAMES+"半荘";
   if(RANGE==="custom")return (RFROM||"?")+" 〜 "+(RTO||"今日");
   return o?o[0]:"全期間";
 }
@@ -1794,12 +2001,65 @@ function transfers(rows){
   }
   return out;
 }
-function openStats(){
+/* 半荘を1つずつ選ぶ（メンバーが入れ替わる日に使う） */
+function recLine(rec){
+  return (isSettled(rec.gid)?"済 ":"")+
+    new Date(rec.end||rec.ts).toLocaleString("ja-JP",{month:"numeric",day:"numeric",hour:"2-digit",minute:"2-digit"});
+}
+function recMembers(rec){
+  return (rec.rows||[]).slice().sort((a,b)=>a.rank-b.rank)
+    .map(x=>x.name+" "+(x.total>0?"+":"")+r1(x.total)).join("／");
+}
+function openPick(after){
   openOv((card,close)=>{
     const draw=()=>{
       card.innerHTML="";
       const h=ce("div","row");h.style.justifyContent="space-between";
-      h.append(ce("h2",null,"通算成績"),rotBtn());card.append(h);
+      h.append(ce("h2",null,"半荘を選ぶ"),rotBtn());card.append(h);
+      card.append(ce("p","lead","精算したい半荘にチェックを入れてください。メンバーが途中で入れ替わった日でも、必要な半荘だけ取り出せます。"));
+      const list=RECS.slice().sort((a,b)=>(b.end||b.ts)-(a.end||a.ts)).slice(0,200);
+      const bar=ce("div","row");
+      const mkb=(t,fn)=>{const b=ce("button","btn sm",t);b.onclick=()=>{fn();savePick();draw()};bar.append(b)};
+      mkb("表示中をすべて選ぶ",()=>list.forEach(r=>PICK.add(r.gid)));
+      mkb("すべて外す",()=>PICK.clear());
+      mkb("直近4半荘",()=>{PICK.clear();list.slice(0,4).forEach(r=>PICK.add(r.gid))});
+      const today=new Date();today.setHours(0,0,0,0);
+      mkb("今日のぶん",()=>{PICK.clear();list.forEach(r=>{if((r.end||r.ts)>=today.getTime())PICK.add(r.gid)})});
+      mkb("未精算だけ選ぶ",()=>{PICK.clear();list.forEach(r=>{if(!isSettled(r.gid))PICK.add(r.gid)})});
+      card.append(bar);
+      const bar2=ce("div","row");
+      const un=ce("button","btn sm ghost","選んだ半荘を未精算に戻す");
+      un.onclick=()=>{unmarkSettled([...PICK]);draw()};
+      bar2.append(un);card.append(bar2);
+      const cnt=ce("p","note","選択中 "+PICK.size+" 半荘");card.append(cnt);
+      if(!list.length)card.append(ce("p","note","記録がありません。"));
+      list.forEach(rec=>{
+        const on=PICK.has(rec.gid);
+        const b=ce("button","pickrow"+(on?" on":""));
+        const box=ce("span","pickbox",on?"✓":"");
+        const tx=ce("span","picktx");
+        tx.append(ce("b",null,recLine(rec)));
+        tx.append(ce("small",null,recMembers(rec)));
+        b.append(box,tx);
+        b.onclick=()=>{if(PICK.has(rec.gid))PICK.delete(rec.gid);else PICK.add(rec.gid);savePick();draw()};
+        card.append(b);
+      });
+      const f=ce("div","row");f.style.justifyContent="flex-end";f.style.marginTop="14px";
+      const ok=ce("button","btn gold","この"+PICK.size+"半荘で精算");
+      ok.onclick=()=>{RANGE="pick";LS.set("jt2.range","pick");close();if(after)after()};
+      const c0=ce("button","btn ghost","閉じる");c0.onclick=()=>{close();if(after)after()};
+      f.append(c0,ok);card.append(f);
+    };
+    draw();
+  });
+}
+function openStats(mode){
+  mode=(mode==="history")?"history":"stats";
+  openOv((card,close)=>{
+    const draw=()=>{
+      card.innerHTML="";
+      const h=ce("div","row");h.style.justifyContent="space-between";
+      h.append(ce("h2",null,mode==="history"?"対局履歴":"成績分析"),rotBtn());card.append(h);
       const badge=ce("p","note");badge.id="syncBadge";card.append(badge);
       const recs=filteredRecs();
       // 期間の選択
@@ -1810,6 +2070,32 @@ function openStats(){
         rr.append(b);
       });
       card.append(rr);
+      if(RANGE==="pick"){
+        const pr=ce("div","row");
+        const b1=ce("button","btn","半荘を選び直す");b1.onclick=()=>openPick(()=>openStats(mode));
+        const b2=ce("button","btn sm ghost","すべて外す");b2.onclick=()=>{PICK.clear();savePick();draw()};
+        pr.append(b1,b2);card.append(pr);
+        if(!PICK.size)card.append(ce("p","warn","まだ1つも選ばれていません。「半荘を選び直す」から選んでください。"));
+      }
+      if(RANGE==="games"){
+        const gr=ce("div","row");gr.style.alignItems="center";
+        const setG=v=>{RGAMES=Math.max(1,Math.min(200,v||1));LS.set("jt2.rgames",RGAMES);draw()};
+        const minus=ce("button","btn","−");minus.onclick=()=>setG(RGAMES-1);
+        const plus=ce("button","btn","＋");plus.onclick=()=>setG(RGAMES+1);
+        const f=ce("div","field");f.style.flex="0 0 110px";
+        f.append(ce("label",null,"半荘数"));
+        const gi=ce("input");gi.type="number";gi.inputMode="numeric";gi.min=1;gi.max=200;gi.value=RGAMES;
+        gi.style.cssText="font-family:var(--num);font-size:20px;text-align:center";
+        gi.onchange=()=>setG(+gi.value||1);
+        f.append(gi);
+        gr.append(minus,f,plus);
+        [1,2,3,4,8].forEach(n=>{
+          const b=ce("button","chip"+(RGAMES===n?" on":""),n+"半荘");
+          b.onclick=()=>setG(n);gr.append(b);
+        });
+        card.append(gr);
+        card.append(ce("p","note","新しい順に"+RGAMES+"半荘だけを集計します。今日の分だけ精算したいときに便利です。"));
+      }
       if(RANGE==="custom"){
         const cr=ce("div","row");
         const mkd=(lbl,val,fn,id)=>{
@@ -1849,6 +2135,7 @@ function openStats(){
       const rows=Object.keys(per).map(k=>Object.assign({name:k},per[k])).sort((a,b)=>b.pt-a.pt);
       if(!rows.length)card.append(ce("p","note",RANGE==="all"?"まだ記録がありません。半荘を終えると自動で保存されます。":"この期間の記録はありません。"));
       else{
+       if(mode==="stats"){
         const sc=ce("div","scroll"),t=ce("table");
         t.innerHTML="<thead><tr><th>プレイヤー</th><th>半荘</th><th>合計pt</th>"+(R.rate?"<th>"+R.rateUnit+"</th>":"")+"<th>平均pt</th><th>平均順位</th>"+
           "<th>1/2/3/4着</th><th>和了率</th><th>放銃率</th><th>リーチ率</th><th>副露率</th><th>ツモ率</th>"+
@@ -1901,14 +2188,35 @@ function openStats(){
           setTimeout(()=>cp.textContent="結果をコピー（LINEなどに貼る）",2000);
         };
         card.append(cp);
-        card.append(ce("div","sec","対局履歴"));
-        recs.slice(0,40).forEach(rec=>{
+        // 精算の確定
+        const unmarked=recs.map(r=>r.gid).filter(g=>g&&!isSettled(g));
+        const done=recs.length-unmarked.length;
+        const fin=ce("button","btn gold",unmarked.length?("この精算を確定（"+unmarked.length+"半荘を精算済みに）"):"すべて精算済みです");
+        fin.style.cssText="margin-top:10px;display:block;width:100%";
+        fin.disabled=!unmarked.length;
+        fin.onclick=()=>{
+          if(!fin.dataset.armed){fin.dataset.armed="1";fin.textContent="もう一度押すと確定";return}
+          markSettled(unmarked);
+          RANGE="unsettled";LS.set("jt2.range","unsettled");draw();
+        };
+        card.append(fin);
+        card.append(ce("p","note","確定すると、この半荘は「未精算」で絞ったときに出てこなくなります。"+
+          "途中で誰かが抜けるときは、そこで一度確定しておくと、次のメンバーのぶんと混ざりません。"+
+          (done?"（この中の "+done+" 半荘はすでに精算済みです）":"")));
+       }
+       if(mode==="history"){
+        const hb=ce("div","row");
+        const pb=ce("button","btn","半荘を選んで精算");pb.onclick=()=>openPick(()=>openStats("stats"));
+        hb.append(pb);card.append(hb);
+        card.append(ce("div","sec","半荘ごとの記録"));
+        recs.slice(0,80).forEach(rec=>{
           const b=ce("button","btn sm");
           b.style.cssText="display:block;width:100%;text-align:left;margin-bottom:6px";
-          b.textContent=new Date(rec.end||rec.ts).toLocaleString("ja-JP",{month:"numeric",day:"numeric",hour:"2-digit",minute:"2-digit"})+
-            "　"+(rec.rows||[]).map(x=>x.name+" "+(x.total>0?"+":"")+r1(x.total)).join("／");
+          b.textContent=recLine(rec)+"　"+recMembers(rec);
           b.onclick=()=>openRecord(rec);card.append(b);
         });
+        if(recs.length>80)card.append(ce("p","note","直近80半荘を表示しています。"));
+       }
       }
       const f=ce("div","row");f.style.justifyContent="flex-end";f.style.marginTop="14px";
       const sy=ce("button","btn sm","シートと同期");
@@ -1938,8 +2246,13 @@ function openRecord(rec){
     card.append(ce("div","sec","得点推移"));
     card.append(graphEl(rec.graph,rec.names,25000));
     const f=ce("div","row");f.style.justifyContent="flex-end";
+    const del=ce("button","btn sm ghost","この記録を削除");
+    del.onclick=()=>{
+      if(!del.dataset.armed){del.dataset.armed="1";del.textContent="もう一度押すと削除";return}
+      dropRecord(rec.gid);close();openStats("history");
+    };
     const b=ce("button","btn gold","閉じる");b.onclick=()=>{close();openStats()};
-    f.append(b);card.append(f);
+    f.append(del,b);card.append(f);
   });
 }
 
@@ -2105,13 +2418,16 @@ function openMenu(){
     h.append(ce("h2",null,"メニュー"),rotBtn());card.append(h);
     const r=ce("div","row");
     const mk=(t,fn)=>{const b=ce("button","btn",t);b.onclick=()=>{close();fn()};r.append(b)};
-    mk("成績・履歴",openStats);
+    mk("成績分析",()=>openStats("stats"));
+    mk("対局履歴",()=>openStats("history"));
     mk("席とメンバー",()=>openSeatPicker(0));
     mk("名簿・リーチボイス",openMembers);
     mk("接続端末",openDevices);
     mk("設定",openSettings);
     if(S.phase==="play")mk("途中流局",()=>{applyAbort()});
+    if(S.phase==="play"&&(S.log||[]).length)mk("局をやり直す",()=>openRewind(false));
     if(S.phase==="play")mk("この半荘を終了",()=>{snap();finish("手動終了")});
+    mk("スタートに戻る",goHome);
     card.append(r);
     card.append(ce("div","sec","点数早見表（子ロン ／ 親ロン）"));
     const sc=ce("div","scroll"),t=ce("table");
@@ -2140,7 +2456,6 @@ document.addEventListener("pointerdown",()=>{
 },{once:true});
 fitScale();
 render();
-if(S.phase==="setup")openSeatPicker();
 loadVoiceManifest();loadUserVoices();
 if(syncOn()){syncFlush().then(syncPull).then(syncState)}
 if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js").catch(()=>{})}
