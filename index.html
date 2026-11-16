@@ -1562,6 +1562,7 @@ function buildRecord(){
   return {gid:S.gid,ts:S.ts,end:S.end||Date.now(),hands:S.hands,note:S.endNote,
     rule:(ru.length==="tonpuu"?"東風":"半荘")+"／ウマ"+ru.umaKey+(ru.oka?"／オカ有":"／オカ無"),
     umaKey:ru.umaKey,mins,names:S.names.slice(),graph:S.log.map(l=>l.after),
+    log:S.log.map(l=>({t:l.t,w:l.w,l:l.l})),
     rows:res.map(x=>{const st=S.st[x.i];
       return {seat:x.i,name:x.name,rank:x.rank,pts:x.pts,score:r1(x.score),
         uma:r1(x.uma+x.oka+(x.yk||0)),total:x.total,hands:S.hands,
