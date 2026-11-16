@@ -74,25 +74,25 @@ img{max-width:100%}
   box-shadow:inset -6px 0 0 #8CCBFF,inset -14px 0 26px -6px rgba(140,203,255,.6)}
 @keyframes wallFlash{0%,44%{opacity:1}52%,100%{opacity:0}}
 .seat .rot{position:absolute;top:50%;left:50%;transform-origin:center;
-  display:flex;flex-direction:column;justify-content:center;gap:3px;padding:4px 10px}
+  display:flex;flex-direction:column;justify-content:center;gap:3px;padding:3px 10px}
 .s0 .rot{transform:translate(-50%,-50%)}
 .s1 .rot{transform:translate(-50%,-50%) rotate(-90deg)}
 .s2 .rot{transform:translate(-50%,-50%) rotate(180deg)}
 .s3 .rot{transform:translate(-50%,-50%) rotate(90deg)}
-.nameRow{display:flex;align-items:center;gap:7px;min-height:20px}
+.nameRow{display:flex;align-items:center;gap:7px;min-height:18px}
 .wbadge{font-family:var(--mincho);font-size:15px;line-height:1;padding:3px 6px;border-radius:5px;
   background:var(--gold);color:#1a1205;flex:none}
 .wbadge.oya{background:var(--red);color:#fff}
 .pname{font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;min-width:0;text-align:left}
 .infoRow{display:flex;align-items:flex-end;justify-content:space-between;gap:10px}
-.rankBox{font-family:var(--num);font-size:15px;line-height:1.25;color:var(--dim);text-align:left;flex:none;
-  display:flex;align-items:baseline;flex-wrap:wrap;gap:0 9px}
+.rankBox{font-family:var(--num);font-size:15px;line-height:1.25;color:var(--dim);text-align:left;
+  flex:1 1 auto;min-width:0;display:flex;align-items:baseline;flex-wrap:wrap;gap:0 9px}
 .rankBox b{color:var(--ink);font-weight:700}
 .rankBox b.r1{color:var(--gold)}
 .rankBox small{display:inline-block;font-size:11px;line-height:1.3;color:var(--faint);font-family:var(--jp);white-space:nowrap}
 .rankBox small .gu{color:#E08C7A;font-style:normal}
 .rankBox small .gd{color:#5FBF95;font-style:normal}
-.pts{font-family:var(--num);font-weight:700;font-size:clamp(28px,6.2vh,52px);line-height:1;
+.pts{flex:none;font-family:var(--num);font-weight:700;font-size:clamp(24px,5.6vh,48px);line-height:1;
   letter-spacing:-.01em;font-variant-numeric:tabular-nums;text-align:right;flex:1}
 .pts.neg{color:var(--red)}
 .calc{font-family:var(--num);font-variant-numeric:tabular-nums;text-align:right;flex:none;line-height:1.15}
@@ -106,11 +106,11 @@ img{max-width:100%}
 .nkTag{font-size:10px;color:var(--faint);letter-spacing:.04em}
 .nkTag.on{color:var(--gold)}
 /* 鳴きはツモ・ロンと取り違えないよう、小さく・灰色で離して置く */
-.sbtn.mini{min-width:52px;max-width:96px;flex:0 0 auto;padding:2px 8px;font-size:11px;border-radius:12px;line-height:1.5;
+.sbtn.mini{min-width:130px;max-width:230px;flex:0 1 auto;padding:9px 16px;font-size:15px;border-radius:16px;line-height:1.4;
   background:#1B3A2D;border:1px solid #3F6B55;color:#9FBFAE;font-weight:400}
 .sbtn.mini.on{background:#3F6B55;color:#fff;border-color:#6FA585}
 .btnRow .sp{flex:1 1 14px;min-width:0}
-.sbtn{padding:15px 0;min-width:66px;max-width:124px;flex:1 1 auto;text-align:center;border-radius:9px;font-size:17px;
+.sbtn{padding:12px 0;min-width:66px;max-width:124px;flex:1 1 auto;text-align:center;border-radius:9px;font-size:17px;
   background:linear-gradient(180deg,#3A6FA8,#2C5988);border:1px solid #5A92C8;color:#fff}
 .sbtn:active{filter:brightness(1.25)}
 .sbtn.on{background:linear-gradient(180deg,#D2564A,#A8382E);border-color:#E87A6F}
