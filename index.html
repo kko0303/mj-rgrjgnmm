@@ -105,11 +105,15 @@ img{max-width:100%}
 .nakiRow{margin-top:0}
 .nkTag{font-size:10px;color:var(--faint);letter-spacing:.04em}
 .nkTag.on{color:var(--gold)}
-/* 鳴きはツモ・ロンと取り違えないよう、小さく・灰色で離して置く */
-.sbtn.mini{min-width:130px;max-width:230px;flex:0 1 auto;padding:9px 16px;font-size:15px;border-radius:16px;line-height:1.4;
+/* 鳴きはツモ・ロンと取り違えないよう、灰色で離して置く（押しやすいよう大きめに） */
+.sbtn.mini{min-width:150px;max-width:280px;flex:0 1 auto;padding:13px 18px;font-size:17px;border-radius:17px;line-height:1.3;
   background:#1B3A2D;border:1px solid #3F6B55;color:#9FBFAE;font-weight:400}
 .sbtn.mini.on{background:#3F6B55;color:#fff;border-color:#6FA585}
 .btnRow .sp{flex:1 1 14px;min-width:0}
+/* 東家・西家（上下の広い席）はツモ・ロンの間が空きすぎるので、ボタン自体を大きくして空間を活かす */
+.s0 .btnRow .sp,.s2 .btnRow .sp{flex:0 1 14px}
+.s0 .sbtn,.s2 .sbtn{max-width:220px;font-size:19px;padding:15px 0}
+.s0 .sbtn.mini,.s2 .sbtn.mini{max-width:320px}
 .sbtn{padding:12px 0;min-width:66px;max-width:124px;flex:1 1 auto;text-align:center;border-radius:9px;font-size:17px;
   background:linear-gradient(180deg,#3A6FA8,#2C5988);border:1px solid #5A92C8;color:#fff}
 .sbtn:active{filter:brightness(1.25)}
@@ -124,6 +128,13 @@ img{max-width:100%}
 .up{color:var(--pos)}.down{color:var(--red)}
 
 #center{grid-area:2/2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px}
+.centerRow{display:flex;align-items:center;justify-content:center;gap:clamp(8px,2.5vw,22px);width:100%;min-width:0}
+.roundBox,.kyokuBox{flex:0 1 auto;min-width:0;border:1px solid var(--blue);border-radius:14px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+  padding:clamp(8px,2vh,16px) clamp(10px,3vw,22px);background:rgba(66,133,199,.1)}
+.roundBox .big,.kyokuBox .big{font-family:var(--mincho);font-weight:700;color:var(--gold);line-height:1;
+  font-size:clamp(20px,4.2vh,34px);white-space:nowrap}
+.roundBox .small,.kyokuBox .small{font-size:clamp(10px,1.6vh,13px);color:var(--dim);white-space:nowrap}
 .tray{width:min(30vh,150px);aspect-ratio:1;border-radius:16px;padding:8px;
   background:linear-gradient(145deg,#4A4E4C,#2A2E2C);display:flex;flex-direction:column;
   align-items:center;justify-content:center;gap:7px;
@@ -1014,6 +1025,10 @@ function renderCenter(){
     const b=ce("button","btn gold","メンバーを選ぶ");b.onclick=()=>openSeatPicker();
     c.append(b);return;
   }
+  const row=ce("div","centerRow");
+  const rBox=ce("div","roundBox");
+  rBox.append(ce("div","big",BAKA[bakaIdx()]),ce("div","small","場"));
+  row.append(rBox);
   const wrap=ce("div","trayWrap");
   const tray=ce("div","tray"),well=ce("div","well");
   if(S.dice){
@@ -1030,7 +1045,12 @@ function renderCenter(){
     const st=ce("div","rstick p"+i+(stickSeen[key]?"":" drop"));
     stickSeen[key]=1;wrap.append(st);
   }
-  c.append(wrap);
+  row.append(wrap);
+  const kBox=ce("div","kyokuBox");
+  kBox.append(ce("div","big",KANJI[S.round%4]+"局"));
+  if(S.honba)kBox.append(ce("div","small",S.honba+"本場"));
+  row.append(kBox);
+  c.append(row);
   if(S.dice&&S.phase==="play"){
     const rr=ce("button","btn sm ghost","振り直す");
     rr.onclick=()=>{snap();rollDice();startWallGlow();lastDiceKey="";saveGame();render()};
